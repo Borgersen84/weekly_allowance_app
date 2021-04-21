@@ -32,6 +32,17 @@ class StartScreen extends StatelessWidget {
         backgroundColor: Color(0xFFF7AEF8),
         elevation: 5,
         child: Icon(Icons.add),
+        onPressed: () {
+          showModalBottomSheet(
+              context: context,
+              builder: (context) {
+                return Container(
+                  height: 300,
+                  color: Color(0xFFB388EB),
+                  child: ListView(),
+                );
+              });
+        },
       ),
       backgroundColor: Color(0xFFD3BAF3),
       appBar: AppBar(
@@ -48,6 +59,14 @@ class StartScreen extends StatelessWidget {
         actions: [
           DropDownMenuButton(
             addItems(),
+          ),
+        ],
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(
+            child: Text("Hello"),
           ),
         ],
       ),

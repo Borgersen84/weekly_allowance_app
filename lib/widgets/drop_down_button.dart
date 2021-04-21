@@ -10,7 +10,7 @@ class DropDownMenuButton extends StatelessWidget {
     return DropdownButton(
       focusColor: Colors.white,
       elevation: 16,
-      dropdownColor: Color(0xFFF7AEF8),
+      dropdownColor: Color(0xFFFBDAFB),
       icon: Icon(
         Icons.adb_rounded,
         color: Color(0xFF9FE7F9),
