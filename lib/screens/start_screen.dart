@@ -11,9 +11,18 @@ class StartScreen extends StatelessWidget {
       MenuItemRow("Add Item", kMenuIcon),
     ),
     onTap: () {
-      print("textitem pooped");
+      print("textitem clicked");
     },
     value: 1,
+  );
+
+  ListTile tile = ListTile(
+    title: Text("Städa rummet"),
+    trailing: Icon(Icons.add),
+    onTap: () {
+      print("on tap working");
+    },
+    subtitle: Text("50 kronor"),
   );
 
   List<DropdownMenuItem> addItems() {
@@ -23,6 +32,15 @@ class StartScreen extends StatelessWidget {
     menuItems.add(dropDown);
 
     return menuItems;
+  }
+
+  List<ListTile> listTiles() {
+    List<ListTile> modalList = [];
+    modalList.add(tile);
+    modalList.add(tile);
+    modalList.add(tile);
+
+    return modalList;
   }
 
   @override
@@ -37,9 +55,15 @@ class StartScreen extends StatelessWidget {
               context: context,
               builder: (context) {
                 return Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 2, color: Colors.white),
+                    color: Color(0xFFB388EB),
+                  ),
                   height: 300,
-                  color: Color(0xFFB388EB),
-                  child: ListView(),
+                  child: ListView(
+                    padding: EdgeInsets.all(8.0),
+                    children: listTiles(),
+                  ),
                 );
               });
         },
