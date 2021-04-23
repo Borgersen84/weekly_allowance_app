@@ -4,6 +4,8 @@ import 'dart:core';
 import 'package:esther_money_app/utilities/constants.dart';
 import 'package:esther_money_app/widgets/menuitems/menu_item_row.dart';
 import 'package:esther_money_app/widgets/menuitems/menu_item_container.dart';
+import 'package:intl/date_symbol_data_file.dart';
+import 'package:intl/intl.dart';
 
 class StartScreen extends StatelessWidget {
   DropdownMenuItem dropDown = DropdownMenuItem(
@@ -25,6 +27,20 @@ class StartScreen extends StatelessWidget {
     subtitle: Text("50 kronor"),
   );
 
+  static DateFormat format = DateFormat("yyyy-MM-dd - kk:mm:ss");
+  static DateTime time = DateTime.now();
+  static String thisTime = format.format(time);
+  static String money = "Värde: 25 SEK";
+
+  ListTile mainTile = ListTile(
+    title: Text("Uppgift: Disk"),
+    subtitle: Text(money),
+    onTap: () {
+      print("on tap working");
+    },
+    trailing: Text("Utförd: $thisTime"),
+  );
+
   List<DropdownMenuItem> addItems() {
     List<DropdownMenuItem> menuItems = [];
     menuItems.add(dropDown);
@@ -34,8 +50,25 @@ class StartScreen extends StatelessWidget {
     return menuItems;
   }
 
+  List<ListTile> mainList() {
+    List<ListTile> myList = [];
+    myList.add(mainTile);
+    myList.add(mainTile);
+    myList.add(mainTile);
+    myList.add(mainTile);
+    myList.add(mainTile);
+    myList.add(mainTile);
+    myList.add(mainTile);
+    myList.add(mainTile);
+
+    return myList;
+  }
+
   List<ListTile> listTiles() {
     List<ListTile> modalList = [];
+    modalList.add(tile);
+    modalList.add(tile);
+    modalList.add(tile);
     modalList.add(tile);
     modalList.add(tile);
     modalList.add(tile);
@@ -104,9 +137,27 @@ class StartScreen extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Center(
-            child: Text("Hello"),
+          Expanded(
+            child: ListView.builder(
+                padding: EdgeInsets.all(8.0),
+                itemCount: mainList().length,
+                itemBuilder: (context, index) {
+                  return Container(
+                    decoration: BoxDecoration(
+                      color: Color(0xFFF7AEF8),
+                      border: Border.all(color: Colors.white, width: 1.5),
+                    ),
+                    child: Card(
+                      elevation: 6,
+                      color: Color(0xFFB388EB),
+                      child: mainList()[index],
+                    ),
+                  );
+                }),
           ),
+          /*Center(
+            child: Text("Hello"),
+          ),*/
         ],
       ),
     );
