@@ -55,34 +55,31 @@ class StartScreen extends StatelessWidget {
               context: context,
               builder: (context) {
                 return Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(width: 2, color: Colors.white),
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(25.0),
-                      ),
-                      color: Color(0xFFF7AEF8),
+                  decoration: BoxDecoration(
+                    border: Border.all(width: 2, color: Colors.white),
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(25.0),
                     ),
-                    height: 300,
-                    child:
-                        /*ListView(
-                    padding: EdgeInsets.all(8.0),
-                    children: listTiles(),*/
-                        ListView.builder(
-                            itemCount: listTiles().length,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                decoration: BoxDecoration(
-                                  color: Color(0xFFF7AEF8),
-                                  border: Border.all(
-                                      color: Colors.white, width: 1.5),
-                                ),
-                                child: Card(
-                                  elevation: 6,
-                                  color: Color(0xFFB388EB),
-                                  child: listTiles()[index],
-                                ),
-                              );
-                            }));
+                    color: Color(0xFFF7AEF8),
+                  ),
+                  height: 300,
+                  child: ListView.builder(
+                      padding: EdgeInsets.all(8.0),
+                      itemCount: listTiles().length,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          decoration: BoxDecoration(
+                            color: Color(0xFFF7AEF8),
+                            border: Border.all(color: Colors.white, width: 1.5),
+                          ),
+                          child: Card(
+                            elevation: 6,
+                            color: Color(0xFFB388EB),
+                            child: listTiles()[index],
+                          ),
+                        );
+                      }),
+                );
               });
         },
       ),
