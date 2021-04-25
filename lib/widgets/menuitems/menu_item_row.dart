@@ -25,7 +25,7 @@ class MenuItemRow extends StatelessWidget {
         ),
       ],
     );
-/*        ListTile(
+    /*ListTile(
       title: Text(menuItemText),
       subtitle: Text("Testing list tiles"),
       trailing: menuItemIcon,
