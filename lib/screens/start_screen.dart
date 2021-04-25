@@ -11,8 +11,17 @@ class StartScreen extends StatelessWidget {
   WeeklyMoney moneyWeekly = WeeklyMoney(
     weekNumber: "6",
     moneyEarned: "200 SEK",
-    weeklyTasks: ["Städa, Diska, Ta ut sopor"],
+    weeklyTasks: ["Städa", "Diska", "Ta ut sopor"],
     progressIcon: Icon(Icons.email),
+  );
+
+  static ListTile mainTile = ListTile(
+    title: Text("Uppgift: Disk"),
+    subtitle: Text(money),
+    onTap: () {
+      print("on tap working");
+    },
+    trailing: Text("Utförd: $thisTime"),
   );
 
   DropdownMenuItem dropDown = DropdownMenuItem(
@@ -24,11 +33,17 @@ class StartScreen extends StatelessWidget {
     },
   );
 
+  void addToList() {
+    myMainList.add(mainTile);
+  }
+
   ListTile tile = ListTile(
     title: Text("Städa rummet"),
     trailing: Icon(Icons.add),
     onTap: () {
-      print("on tap working");
+      print("on tap working addmenu");
+      myMainList.add(mainTile);
+      print(myMainList.length.toString());
     },
     subtitle: Text("50 kronor"),
   );
@@ -37,18 +52,10 @@ class StartScreen extends StatelessWidget {
   static DateTime time = DateTime.now();
   static String thisTime = format.format(time);
   static String money = "Värde: 25 SEK";
-
-  ListTile mainTile = ListTile(
-    title: Text("Uppgift: Disk"),
-    subtitle: Text(money),
-    onTap: () {
-      print("on tap working");
-    },
-    trailing: Text("Utförd: $thisTime"),
-  );
+  static List<ListTile> myMainList = [];
 
   List<ListTile> mainList() {
-    List<ListTile> myList = [];
+    /*List<ListTile> myList = [];
     myList.add(mainTile);
     myList.add(mainTile);
     myList.add(mainTile);
@@ -56,9 +63,16 @@ class StartScreen extends StatelessWidget {
     myList.add(mainTile);
     myList.add(mainTile);
     myList.add(mainTile);
-    myList.add(mainTile);
+    myList.add(mainTile);*/
 
-    return myList;
+    myMainList.add(mainTile);
+    myMainList.add(mainTile);
+    myMainList.add(mainTile);
+    myMainList.add(mainTile);
+    myMainList.add(mainTile);
+    myMainList.add(mainTile);
+
+    return myMainList;
   }
 
   List<DropdownMenuItem> addItems() {
@@ -147,7 +161,7 @@ class StartScreen extends StatelessWidget {
             flex: 3,
             child: ListView.builder(
                 padding: EdgeInsets.all(8.0),
-                itemCount: mainList().length,
+                itemCount: myMainList.length,
                 itemBuilder: (context, index) {
                   return Container(
                     margin: EdgeInsets.symmetric(vertical: 3.0, horizontal: 0),
@@ -158,7 +172,7 @@ class StartScreen extends StatelessWidget {
                     child: Card(
                       elevation: 0,
                       color: Color(0xFFF7AEF8),
-                      child: mainList()[index],
+                      child: myMainList[index],
                     ),
                   );
                 }),
@@ -181,16 +195,28 @@ class StartScreen extends StatelessWidget {
                 children: [
                   Padding(
                     padding: EdgeInsets.all(8.0),
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: Center(
-                        child: Text(
-                          "Vecka 25",
-                          style: TextStyle(fontSize: 20.0),
-                        ),
+                    child: Center(
+                      child: Text(
+                        moneyWeekly.weekNumber,
+                        style: TextStyle(fontSize: 20.0),
                       ),
                     ),
                   ),
+                  Expanded(
+                    flex: 2,
+                    child: ListView.builder(
+                        itemCount: moneyWeekly.weeklyTasks.length,
+                        itemBuilder: (context, index) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(moneyWeekly.weeklyTasks[index]),
+                              Icon(Icons.emoji_emotions),
+                            ],
+                          );
+                        }),
+                  ),
+                  Expanded(child: Icon(Icons.emoji_emotions_sharp)),
                 ],
               ),
             ),
