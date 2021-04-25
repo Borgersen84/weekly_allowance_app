@@ -7,14 +7,7 @@ import 'package:esther_money_app/widgets/menuitems/menu_item_container.dart';
 import 'package:intl/intl.dart';
 import 'package:esther_money_app/models/weekly_money_model.dart';
 
-class StartScreen extends StatelessWidget {
-  WeeklyMoney moneyWeekly = WeeklyMoney(
-    weekNumber: "6",
-    moneyEarned: "200 SEK",
-    weeklyTasks: ["Städa", "Diska", "Ta ut sopor"],
-    progressIcon: Icon(Icons.email),
-  );
-
+class StartScreen extends StatefulWidget {
   static ListTile mainTile = ListTile(
     title: Text("Uppgift: Disk"),
     subtitle: Text(money),
@@ -22,6 +15,45 @@ class StartScreen extends StatelessWidget {
       print("on tap working");
     },
     trailing: Text("Utförd: $thisTime"),
+  );
+
+  static DateFormat format = DateFormat("yyyy-MM-dd - kk:mm:ss");
+  static DateTime time = DateTime.now();
+  static String thisTime = format.format(time);
+  static String money = "Värde: 25 SEK";
+  static List<ListTile> myMainList = [];
+
+  @override
+  _StartScreenState createState() => _StartScreenState();
+}
+
+class _StartScreenState extends State<StartScreen> {
+  ListTile tile;
+  List<ListTile> finishedTasks = [];
+  List<ListTile> tasksToAdd = [];
+
+  @override
+  void initState() {
+    super.initState();
+    tile = ListTile(
+      title: Text("Städa rummet"),
+      trailing: Icon(Icons.add),
+      subtitle: Text("50 kronor"),
+    );
+
+    tasksToAdd.add(tile);
+    tasksToAdd.add(tile);
+    tasksToAdd.add(tile);
+    tasksToAdd.add(tile);
+    tasksToAdd.add(tile);
+    tasksToAdd.add(tile);
+  }
+
+  WeeklyMoney moneyWeekly = WeeklyMoney(
+    weekNumber: "6",
+    moneyEarned: "200 SEK",
+    weeklyTasks: ["Städa", "Diska", "Ta ut sopor"],
+    progressIcon: Icon(Icons.email),
   );
 
   DropdownMenuItem dropDown = DropdownMenuItem(
@@ -34,45 +66,7 @@ class StartScreen extends StatelessWidget {
   );
 
   void addToList() {
-    myMainList.add(mainTile);
-  }
-
-  ListTile tile = ListTile(
-    title: Text("Städa rummet"),
-    trailing: Icon(Icons.add),
-    onTap: () {
-      print("on tap working addmenu");
-      myMainList.add(mainTile);
-      print(myMainList.length.toString());
-    },
-    subtitle: Text("50 kronor"),
-  );
-
-  static DateFormat format = DateFormat("yyyy-MM-dd - kk:mm:ss");
-  static DateTime time = DateTime.now();
-  static String thisTime = format.format(time);
-  static String money = "Värde: 25 SEK";
-  static List<ListTile> myMainList = [];
-
-  List<ListTile> mainList() {
-    /*List<ListTile> myList = [];
-    myList.add(mainTile);
-    myList.add(mainTile);
-    myList.add(mainTile);
-    myList.add(mainTile);
-    myList.add(mainTile);
-    myList.add(mainTile);
-    myList.add(mainTile);
-    myList.add(mainTile);*/
-
-    myMainList.add(mainTile);
-    myMainList.add(mainTile);
-    myMainList.add(mainTile);
-    myMainList.add(mainTile);
-    myMainList.add(mainTile);
-    myMainList.add(mainTile);
-
-    return myMainList;
+    StartScreen.myMainList.add(StartScreen.mainTile);
   }
 
   List<DropdownMenuItem> addItems() {
@@ -99,6 +93,24 @@ class StartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFD3BAF3),
+      appBar: AppBar(
+        centerTitle: true,
+        backgroundColor: Color(0xFFB388EB),
+        title: Text(
+          "Esther's lista",
+          style: TextStyle(
+            fontSize: 23.0,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF9FE7F9),
+          ),
+        ),
+        actions: [
+          DropDownMenuButton(
+            addItems(),
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xFFF7AEF8),
         elevation: 5,
@@ -118,41 +130,24 @@ class StartScreen extends StatelessWidget {
                   height: 300,
                   child: ListView.builder(
                       padding: EdgeInsets.all(8.0),
-                      itemCount: listTiles().length,
+                      itemCount: tasksToAdd.length,
                       itemBuilder: (context, index) {
-                        return Container(
-                          decoration: BoxDecoration(
-                            color: Color(0xFFF7AEF8),
-                            border: Border.all(color: Colors.white, width: 1.5),
-                          ),
-                          child: Card(
-                            elevation: 6,
-                            color: Color(0xFFB388EB),
-                            child: listTiles()[index],
+                        return GestureDetector(
+                          onTap: () {
+                            setState(() {});
+                            finishedTasks.add(StartScreen.mainTile);
+                            print("GestureDetector");
+                          },
+                          child: AddTaskCard(
+                            tasksToAdd: tasksToAdd,
+                            indexOfList: index,
+                            elevationOfCard: 6.0,
                           ),
                         );
                       }),
                 );
               });
         },
-      ),
-      backgroundColor: Color(0xFFD3BAF3),
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: Color(0xFFB388EB),
-        title: Text(
-          "Esther's lista",
-          style: TextStyle(
-            fontSize: 23.0,
-            fontWeight: FontWeight.bold,
-            color: Color(0xFF9FE7F9),
-          ),
-        ),
-        actions: [
-          DropDownMenuButton(
-            addItems(),
-          ),
-        ],
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -161,19 +156,12 @@ class StartScreen extends StatelessWidget {
             flex: 3,
             child: ListView.builder(
                 padding: EdgeInsets.all(8.0),
-                itemCount: myMainList.length,
+                itemCount: finishedTasks.length,
                 itemBuilder: (context, index) {
-                  return Container(
-                    margin: EdgeInsets.symmetric(vertical: 3.0, horizontal: 0),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Color(0xFFB388EB), width: 2),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: Card(
-                      elevation: 0,
-                      color: Color(0xFFF7AEF8),
-                      child: myMainList[index],
-                    ),
+                  return FinishedTaskCard(
+                    finishedTasks: finishedTasks,
+                    indexOfList: index,
+                    elevationOfCard: 0.0,
                   );
                 }),
           ),
@@ -207,11 +195,11 @@ class StartScreen extends StatelessWidget {
                     child: ListView.builder(
                         itemCount: moneyWeekly.weeklyTasks.length,
                         itemBuilder: (context, index) {
-                          return Column(
+                          return Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(moneyWeekly.weeklyTasks[index]),
-                              Icon(Icons.emoji_emotions),
+                              moneyWeekly.progressIcon,
                             ],
                           );
                         }),
@@ -222,6 +210,54 @@ class StartScreen extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class AddTaskCard extends StatelessWidget {
+  final List<ListTile> tasksToAdd;
+  final int indexOfList;
+  final double elevationOfCard;
+
+  AddTaskCard({this.tasksToAdd, this.indexOfList, this.elevationOfCard});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Color(0xFFF7AEF8),
+        border: Border.all(color: Colors.white, width: 1.5),
+      ),
+      child: Card(
+        elevation: elevationOfCard,
+        color: Color(0xFFB388EB),
+        child: tasksToAdd[indexOfList],
+      ),
+    );
+  }
+}
+
+class FinishedTaskCard extends StatelessWidget {
+  final List<ListTile> finishedTasks;
+  final int indexOfList;
+  final double elevationOfCard;
+
+  FinishedTaskCard(
+      {this.finishedTasks, this.indexOfList, this.elevationOfCard});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 3.0, horizontal: 0),
+      decoration: BoxDecoration(
+        border: Border.all(color: Color(0xFFB388EB), width: 2),
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      child: Card(
+        elevation: elevationOfCard,
+        color: Color(0xFFF7AEF8),
+        child: finishedTasks[indexOfList],
       ),
     );
   }
