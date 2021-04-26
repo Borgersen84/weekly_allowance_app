@@ -1,28 +1,15 @@
+import 'package:esther_money_app/models/new_task.dart';
+import 'package:esther_money_app/utilities/complete_task_list.dart';
 import 'package:flutter/material.dart';
 import 'package:esther_money_app/widgets/drop_down_button.dart';
 import 'dart:core';
 import 'package:esther_money_app/utilities/constants.dart';
 import 'package:esther_money_app/widgets/menuitems/menu_item_row.dart';
 import 'package:esther_money_app/widgets/menuitems/menu_item_container.dart';
-import 'package:intl/intl.dart';
 import 'package:esther_money_app/models/weekly_money_model.dart';
+import 'package:esther_money_app/models/finished_task.dart';
 
 class StartScreen extends StatefulWidget {
-  static ListTile mainTile = ListTile(
-    title: Text("Uppgift: Disk"),
-    subtitle: Text(money),
-    onTap: () {
-      print("on tap working");
-    },
-    trailing: Text("Utförd: $thisTime"),
-  );
-
-  static DateFormat format = DateFormat("yyyy-MM-dd - kk:mm:ss");
-  static DateTime time = DateTime.now();
-  static String thisTime = format.format(time);
-  static String money = "Värde: 25 SEK";
-  static List<ListTile> myMainList = [];
-
   @override
   _StartScreenState createState() => _StartScreenState();
 }
@@ -31,22 +18,35 @@ class _StartScreenState extends State<StartScreen> {
   ListTile tile;
   List<ListTile> finishedTasks = [];
   List<ListTile> tasksToAdd = [];
+  List<NewTask> newTasks = [];
+  CompleteTaskList taskList2 = CompleteTaskList();
+
+  void addTaskToList(int index) {
+    NewTask task = newTasks[index];
+    FinishedTask newTask = FinishedTask(task.taskTitle, task.taskValue);
+    newTask.setTaskSubmitted(DateTime.now());
+    ListTile tile = ListTile(
+      title: Text(newTask.taskTitle),
+      subtitle: Text("Värde: " + newTask.valueOfTask.toString() + " SEK"),
+      trailing: Text(newTask.taskSubmitted),
+    );
+    finishedTasks.add(tile);
+  }
 
   @override
   void initState() {
     super.initState();
-    tile = ListTile(
-      title: Text("Städa rummet"),
-      trailing: Icon(Icons.add),
-      subtitle: Text("50 kronor"),
-    );
+    newTasks = taskList2.task_list;
 
-    tasksToAdd.add(tile);
-    tasksToAdd.add(tile);
-    tasksToAdd.add(tile);
-    tasksToAdd.add(tile);
-    tasksToAdd.add(tile);
-    tasksToAdd.add(tile);
+    for (NewTask task in newTasks) {
+      tile = ListTile(
+        title: Text(task.taskTitle),
+        subtitle: Text("Värde: " + task.taskValue.toString()),
+        trailing: task.taskIcon,
+      );
+
+      tasksToAdd.add(tile);
+    }
   }
 
   WeeklyMoney moneyWeekly = WeeklyMoney(
@@ -65,10 +65,6 @@ class _StartScreenState extends State<StartScreen> {
     },
   );
 
-  void addToList() {
-    StartScreen.myMainList.add(StartScreen.mainTile);
-  }
-
   List<DropdownMenuItem> addItems() {
     List<DropdownMenuItem> menuItems = [];
     menuItems.add(dropDown);
@@ -76,18 +72,6 @@ class _StartScreenState extends State<StartScreen> {
     menuItems.add(dropDown);
 
     return menuItems;
-  }
-
-  List<ListTile> listTiles() {
-    List<ListTile> modalList = [];
-    modalList.add(tile);
-    modalList.add(tile);
-    modalList.add(tile);
-    modalList.add(tile);
-    modalList.add(tile);
-    modalList.add(tile);
-
-    return modalList;
   }
 
   @override
@@ -135,7 +119,7 @@ class _StartScreenState extends State<StartScreen> {
                         return GestureDetector(
                           onTap: () {
                             setState(() {});
-                            finishedTasks.add(StartScreen.mainTile);
+                            addTaskToList(index);
                             print("GestureDetector");
                           },
                           child: AddTaskCard(
