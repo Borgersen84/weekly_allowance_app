@@ -1,5 +1,6 @@
+import 'package:esther_money_app/models/finished_task.dart';
 import 'package:esther_money_app/models/new_task.dart';
-import 'package:esther_money_app/utilities/complete_task_list.dart';
+import 'package:esther_money_app/utilities/task_list.dart';
 import 'package:flutter/material.dart';
 import 'package:esther_money_app/widgets/drop_down_button.dart';
 import 'dart:core';
@@ -7,7 +8,7 @@ import 'package:esther_money_app/utilities/constants.dart';
 import 'package:esther_money_app/widgets/menuitems/menu_item_row.dart';
 import 'package:esther_money_app/widgets/menuitems/menu_item_container.dart';
 import 'package:esther_money_app/models/weekly_money_model.dart';
-import 'package:esther_money_app/models/finished_task.dart';
+import 'package:esther_money_app/utilities/weekly_sum_calculator.dart';
 
 class StartScreen extends StatefulWidget {
   @override
@@ -19,24 +20,13 @@ class _StartScreenState extends State<StartScreen> {
   List<ListTile> finishedTasks = [];
   List<ListTile> tasksToAdd = [];
   List<NewTask> newTasks = [];
-  CompleteTaskList taskList2 = CompleteTaskList();
-
-  void addTaskToList(int index) {
-    NewTask task = newTasks[index];
-    FinishedTask newTask = FinishedTask(task.taskTitle, task.taskValue);
-    newTask.setTaskSubmitted(DateTime.now());
-    ListTile tile = ListTile(
-      title: Text(newTask.taskTitle),
-      subtitle: Text("Värde: " + newTask.valueOfTask.toString() + " SEK"),
-      trailing: Text(newTask.taskSubmitted),
-    );
-    finishedTasks.add(tile);
-  }
+  List<FinishedTask> tasks = [];
+  TaskList taskList = TaskList();
 
   @override
   void initState() {
     super.initState();
-    newTasks = taskList2.task_list;
+    newTasks = taskList.taskList;
 
     for (NewTask task in newTasks) {
       tile = ListTile(
@@ -119,7 +109,8 @@ class _StartScreenState extends State<StartScreen> {
                         return GestureDetector(
                           onTap: () {
                             setState(() {});
-                            addTaskToList(index);
+                            taskList.addTaskToList(
+                                newTasks, index, finishedTasks, tasks);
                             print("GestureDetector");
                           },
                           child: AddTaskCard(
@@ -133,68 +124,81 @@ class _StartScreenState extends State<StartScreen> {
               });
         },
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Expanded(
-            flex: 3,
-            child: ListView.builder(
-                padding: EdgeInsets.all(8.0),
-                itemCount: finishedTasks.length,
-                itemBuilder: (context, index) {
-                  return FinishedTaskCard(
-                    finishedTasks: finishedTasks,
-                    indexOfList: index,
-                    elevationOfCard: 0.0,
-                  );
-                }),
-          ),
-          SizedBox(
-            width: double.infinity,
-            height: 6.0,
-            child: Container(
-              color: Color(0xFF72DDF7),
+      body: finishedTasks.length > 0
+          ? _mainBody()
+          : Center(
+              child: Text("Listan är tom. Du måste jobba"),
             ),
+    );
+  }
+
+  Column _mainBody() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Expanded(
+          flex: 3,
+          child: ListView.builder(
+              padding: EdgeInsets.all(8.0),
+              itemCount: finishedTasks.length,
+              itemBuilder: (context, index) {
+                return FinishedTaskCard(
+                  finishedTasks: finishedTasks,
+                  indexOfList: index,
+                  elevationOfCard: 0.0,
+                );
+              }),
+        ),
+        SizedBox(
+          width: double.infinity,
+          height: 6.0,
+          child: Container(
+            color: Color(0xFF72DDF7),
           ),
-          Expanded(
-            flex: 1,
-            child: Container(
-              decoration: BoxDecoration(
-                color: Color(0xFF91A0F3),
-                border: Border.all(color: Color(0xFFB388EB), width: 2),
-              ),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Center(
-                      child: Text(
-                        moneyWeekly.weekNumber,
-                        style: TextStyle(fontSize: 20.0),
-                      ),
+        ),
+        Expanded(
+          flex: 1,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Color(0xFF91A0F3),
+              border: Border.all(color: Color(0xFFB388EB), width: 2),
+            ),
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Center(
+                    child: Text(
+                      moneyWeekly.weekNumber,
+                      style: TextStyle(fontSize: 20.0),
                     ),
                   ),
-                  Expanded(
-                    flex: 2,
-                    child: ListView.builder(
-                        itemCount: moneyWeekly.weeklyTasks.length,
-                        itemBuilder: (context, index) {
-                          return Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(moneyWeekly.weeklyTasks[index]),
-                              moneyWeekly.progressIcon,
-                            ],
-                          );
-                        }),
-                  ),
-                  Expanded(child: Icon(Icons.emoji_emotions_sharp)),
-                ],
-              ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: ListView.builder(
+                      itemCount: moneyWeekly.weeklyTasks.length,
+                      itemBuilder: (context, index) {
+                        return Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(moneyWeekly.weeklyTasks[index]),
+                            moneyWeekly.progressIcon,
+                          ],
+                        );
+                      }),
+                ),
+                Expanded(
+                  child: Text("Money made this week: " +
+                      WeeklySumCalculator.calculateSum(tasks).toString() +
+                      " SEK"),
+                ),
+                Expanded(child: Icon(Icons.emoji_emotions_sharp)),
+              ],
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
