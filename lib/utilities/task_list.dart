@@ -16,8 +16,12 @@ class TaskList {
 
   List<NewTask> get taskList => _taskList;
 
-  void addTaskToList(List<NewTask> newTasks, int index,
-      List<ListTile> finishedTasks, List<FinishedTask> tasks) {
+  void addTaskToList(
+      List<NewTask> newTasks,
+      int index,
+      List<ListTile> finishedTasks,
+      List<FinishedTask> tasks,
+      BuildContext context) {
     NewTask task = newTasks[index];
     FinishedTask newTask = FinishedTask(task.taskTitle, task.taskValue);
     if (!_checkForDuplicate(tasks, newTask.taskTitle)) {
@@ -30,7 +34,7 @@ class TaskList {
       );
       finishedTasks.add(tile);
     } else {
-      print("You cant add this twice!");
+      _showAlertDialog(context);
     }
   }
 
@@ -42,5 +46,26 @@ class TaskList {
       }
     }
     return false;
+  }
+
+  _showAlertDialog(BuildContext context) {
+    AlertDialog alert = AlertDialog(
+      title: Text("Woopsie.."),
+      content: Text("Du har redan städat rummet denna veckan!"),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text("OK"),
+        )
+      ],
+    );
+
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        });
   }
 }

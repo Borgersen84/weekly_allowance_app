@@ -110,8 +110,7 @@ class _StartScreenState extends State<StartScreen> {
                           onTap: () {
                             setState(() {});
                             taskList.addTaskToList(
-                                newTasks, index, finishedTasks, tasks);
-                            print("GestureDetector");
+                                newTasks, index, finishedTasks, tasks, context);
                           },
                           child: AddTaskCard(
                             tasksToAdd: tasksToAdd,
