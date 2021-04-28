@@ -1,8 +1,11 @@
 import 'package:esther_money_app/models/new_task.dart';
 import 'package:flutter/material.dart';
 import 'package:esther_money_app/models/finished_task.dart';
+import 'package:esther_money_app/utilities/popup_message_dialog.dart';
 
 class TaskList {
+  final String message = "Du har redan städat rummet denna veckan!";
+
   NewTask dishes = NewTask("Disk", 10, Icon(Icons.add));
   NewTask cleanUpRoom = NewTask("Städa rummet", 50, Icon(Icons.add));
   NewTask takeOutTrash = NewTask("Ta ut sopor", 5, Icon(Icons.add));
@@ -34,7 +37,7 @@ class TaskList {
       );
       finishedTasks.add(tile);
     } else {
-      _showAlertDialog(context);
+      PopupMessageDialog.showAlertDialog(context, message);
     }
   }
 
@@ -46,26 +49,5 @@ class TaskList {
       }
     }
     return false;
-  }
-
-  _showAlertDialog(BuildContext context) {
-    AlertDialog alert = AlertDialog(
-      title: Text("Woopsie.."),
-      content: Text("Du har redan städat rummet denna veckan!"),
-      actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: Text("OK"),
-        )
-      ],
-    );
-
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return alert;
-        });
   }
 }
