@@ -14,10 +14,10 @@ class MenuItemRow extends StatelessWidget {
         Text(
           menuItemText,
           style: TextStyle(
-              color: Color(0xFF9FE7F9),
-              fontSize: 22.0,
-              fontWeight: FontWeight.bold,
-              letterSpacing: 2),
+            color: Color(0xFF9FE7F9),
+            fontSize: 20.0,
+            letterSpacing: 2,
+          ),
         ),
         Icon(
           Icons.add,

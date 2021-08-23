@@ -18,7 +18,10 @@ class DropDownMenuButton extends StatelessWidget {
       ),
       iconSize: 35.0,
       items: menuItems,
-      onChanged: (_) {},
+      onChanged: (_) {
+        Navigator.pushNamed(context, "/weeks");
+        print("it inside yeyyyy");
+      },
     );
   }
 }

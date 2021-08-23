@@ -1,5 +1,6 @@
 import 'package:esther_money_app/models/finished_task.dart';
 import 'package:esther_money_app/models/new_task.dart';
+import 'package:esther_money_app/screens/weeks_viewer_screen.dart';
 import 'package:esther_money_app/utilities/task_list.dart';
 import 'package:flutter/material.dart';
 import 'package:esther_money_app/widgets/drop_down_button.dart';
@@ -9,6 +10,7 @@ import 'package:esther_money_app/widgets/menuitems/menu_item_row.dart';
 import 'package:esther_money_app/widgets/menuitems/menu_item_container.dart';
 import 'package:esther_money_app/models/weekly_money_model.dart';
 import 'package:esther_money_app/utilities/weekly_sum_calculator.dart';
+import 'package:week_of_year/week_of_year.dart';
 
 class StartScreen extends StatefulWidget {
   @override
@@ -40,25 +42,23 @@ class _StartScreenState extends State<StartScreen> {
   }
 
   WeeklyMoney moneyWeekly = WeeklyMoney(
-    weekNumber: "6",
+    weekNumber: "Vecka " + DateTime.now().weekOfYear.toString(),
     moneyEarned: "200 SEK",
     weeklyTasks: ["Städa", "Diska", "Ta ut sopor"],
     progressIcon: Icon(Icons.email),
   );
 
-  DropdownMenuItem dropDown = DropdownMenuItem(
-    child: MenuItemContainer(
-      MenuItemRow("Add Item", kMenuIcon),
-    ),
-    onTap: () {
-      print("textitem clicked");
-    },
-  );
-
   List<DropdownMenuItem> addItems() {
+    DropdownMenuItem dropDown = DropdownMenuItem(
+      child: MenuItemContainer(
+        MenuItemRow("Last week", kMenuIcon),
+      ),
+      onTap: () {
+        //print("textitem clicked");
+        //Navigator.pushNamed(context, "/weeks");
+      },
+    );
     List<DropdownMenuItem> menuItems = [];
-    menuItems.add(dropDown);
-    menuItems.add(dropDown);
     menuItems.add(dropDown);
 
     return menuItems;
@@ -188,11 +188,27 @@ class _StartScreenState extends State<StartScreen> {
                       }),
                 ),
                 Expanded(
-                  child: Text("Money made this week: " +
-                      WeeklySumCalculator.calculateSum(tasks).toString() +
-                      " SEK"),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.attach_money,
+                        size: 25.0,
+                      ),
+                      Text(
+                        WeeklySumCalculator.calculateSum(tasks).toString() +
+                            " SEK",
+                        style: TextStyle(fontSize: 25.0),
+                      )
+                    ],
+                  ),
                 ),
-                Expanded(child: Icon(Icons.emoji_emotions_sharp)),
+                Expanded(
+                  child: Icon(
+                    Icons.emoji_emotions_sharp,
+                    color: Colors.yellow,
+                  ),
+                ),
               ],
             ),
           ),
