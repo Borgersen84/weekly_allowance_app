@@ -35,7 +35,7 @@ class TaskList {
         subtitle: Text("Värde: " + newTask.valueOfTask.toString() + " SEK"),
         trailing: Text(newTask.taskSubmitted),
       );
-      finishedTasks.add(tile);
+      finishedTasks.insert(0, tile);
     } else {
       PopupMessageDialog.showAlertDialog(context, message);
     }
