@@ -1,6 +1,5 @@
 import 'package:esther_money_app/models/finished_task.dart';
 import 'package:esther_money_app/models/new_task.dart';
-import 'package:esther_money_app/screens/weeks_viewer_screen.dart';
 import 'package:esther_money_app/utilities/task_list.dart';
 import 'package:flutter/material.dart';
 import 'package:esther_money_app/widgets/drop_down_button.dart';
@@ -24,6 +23,8 @@ class _StartScreenState extends State<StartScreen> {
   List<NewTask> newTasks = [];
   List<FinishedTask> tasks = [];
   TaskList taskList = TaskList();
+  WeeklyMoney moneyWeekly =
+      WeeklyMoney("Vecka " + DateTime.now().weekOfYear.toString());
 
   @override
   void initState() {
@@ -41,22 +42,11 @@ class _StartScreenState extends State<StartScreen> {
     }
   }
 
-  WeeklyMoney moneyWeekly = WeeklyMoney(
-    weekNumber: "Vecka " + DateTime.now().weekOfYear.toString(),
-    moneyEarned: "200 SEK",
-    weeklyTasks: ["Städa", "Diska", "Ta ut sopor"],
-    progressIcon: Icon(Icons.email),
-  );
-
   List<DropdownMenuItem> addItems() {
     DropdownMenuItem dropDown = DropdownMenuItem(
       child: MenuItemContainer(
         MenuItemRow("Last week", kMenuIcon),
       ),
-      onTap: () {
-        //print("textitem clicked");
-        //Navigator.pushNamed(context, "/weeks");
-      },
     );
     List<DropdownMenuItem> menuItems = [];
     menuItems.add(dropDown);
@@ -181,8 +171,8 @@ class _StartScreenState extends State<StartScreen> {
                         return Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(moneyWeekly.weeklyTasks[index]),
-                            moneyWeekly.progressIcon,
+                            Text(moneyWeekly.weeklyTasks[index].taskName),
+                            moneyWeekly.weeklyTasks[index].taskIcon,
                           ],
                         );
                       }),
