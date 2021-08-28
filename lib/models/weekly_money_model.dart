@@ -2,7 +2,7 @@ import 'package:esther_money_app/models/weekly_money_task_model.dart';
 import 'package:flutter/material.dart';
 
 class WeeklyMoney {
-  String weekNumber;
+  String? weekNumber;
   List<WeeklyMoneyTask> _weeklyTasks = [];
 
   WeeklyMoneyTask cleaningTask =

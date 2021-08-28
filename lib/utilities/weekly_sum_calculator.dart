@@ -5,7 +5,7 @@ class WeeklySumCalculator {
     int finalSum = 0;
 
     for (FinishedTask t in taskList) {
-      finalSum += t.valueOfTask;
+      finalSum += t.valueOfTask!;
     }
 
     return finalSum;

@@ -26,19 +26,28 @@ class TaskList {
       List<FinishedTask> tasks,
       BuildContext context) {
     NewTask task = newTasks[index];
-    FinishedTask newTask = FinishedTask(task.taskTitle, task.taskValue);
-    if (!_checkForDuplicate(tasks, newTask.taskTitle)) {
+    FinishedTask newTask = FinishedTask(1, task.taskTitle, task.taskValue);
+    if (!_checkForDuplicate(tasks, newTask.taskTitle!)) {
       tasks.add(newTask);
       newTask.setTaskSubmitted(DateTime.now());
       ListTile tile = ListTile(
-        title: Text(newTask.taskTitle),
+        title: Text(newTask.taskTitle!),
         subtitle: Text("Värde: " + newTask.valueOfTask.toString() + " SEK"),
-        trailing: Text(newTask.taskSubmitted),
+        trailing: Text(newTask.taskSubmitted!),
       );
       finishedTasks.insert(0, tile);
     } else {
       PopupMessageDialog.showAlertDialog(context, message);
     }
+  }
+
+  void testFunctionForDb(FinishedTask task, List<ListTile> finishedTasks) {
+    ListTile tile = ListTile(
+      title: Text(task.taskTitle!),
+      subtitle: Text("Värde: " + task.valueOfTask.toString() + " SEK"),
+      trailing: Text("Yello"),
+    );
+    finishedTasks.insert(0, tile);
   }
 
   bool _checkForDuplicate(List<FinishedTask> tasks, String newTaskTitle) {

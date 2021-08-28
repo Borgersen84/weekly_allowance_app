@@ -17,7 +17,7 @@ class StartScreen extends StatefulWidget {
 }
 
 class _StartScreenState extends State<StartScreen> {
-  ListTile tile;
+  ListTile tile = ListTile();
   List<ListTile> finishedTasks = [];
   List<ListTile> tasksToAdd = [];
   List<NewTask> newTasks = [];
@@ -29,6 +29,9 @@ class _StartScreenState extends State<StartScreen> {
   @override
   void initState() {
     super.initState();
+    FinishedTask testTask = FinishedTask(1, "promp", 1);
+    taskList.testFunctionForDb(testTask, finishedTasks);
+
     newTasks = taskList.taskList;
 
     for (NewTask task in newTasks) {
@@ -134,7 +137,7 @@ class _StartScreenState extends State<StartScreen> {
                 return FinishedTaskCard(
                   finishedTasks: finishedTasks,
                   indexOfList: index,
-                  elevationOfCard: 0.0,
+                  elevationOfCard: 7.0,
                 );
               }),
         ),
@@ -158,7 +161,7 @@ class _StartScreenState extends State<StartScreen> {
                   padding: EdgeInsets.all(8.0),
                   child: Center(
                     child: Text(
-                      moneyWeekly.weekNumber,
+                      moneyWeekly.weekNumber!,
                       style: TextStyle(fontSize: 20.0),
                     ),
                   ),
@@ -171,7 +174,7 @@ class _StartScreenState extends State<StartScreen> {
                         return Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(moneyWeekly.weeklyTasks[index].taskName),
+                            Text(moneyWeekly.weeklyTasks[index].taskName!),
                             moneyWeekly.weeklyTasks[index].taskIcon,
                           ],
                         );
@@ -213,7 +216,10 @@ class AddTaskCard extends StatelessWidget {
   final int indexOfList;
   final double elevationOfCard;
 
-  AddTaskCard({this.tasksToAdd, this.indexOfList, this.elevationOfCard});
+  AddTaskCard(
+      {required this.tasksToAdd,
+      required this.indexOfList,
+      required this.elevationOfCard});
 
   @override
   Widget build(BuildContext context) {
@@ -237,7 +243,9 @@ class FinishedTaskCard extends StatelessWidget {
   final double elevationOfCard;
 
   FinishedTaskCard(
-      {this.finishedTasks, this.indexOfList, this.elevationOfCard});
+      {required this.finishedTasks,
+      required this.indexOfList,
+      required this.elevationOfCard});
 
   @override
   Widget build(BuildContext context) {

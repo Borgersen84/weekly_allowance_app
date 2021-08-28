@@ -1,8 +1,12 @@
 import 'package:esther_money_app/screens/start_screen.dart';
 import 'package:esther_money_app/screens/weeks_viewer_screen.dart';
 import 'package:flutter/material.dart';
+import 'database/db_helper.dart';
 
-void main() {
+DatabaseHelper dbHelper = DatabaseHelper();
+
+void main() async {
+  dbHelper.openDb();
   runApp(MyApp());
 }
 
