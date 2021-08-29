@@ -1,20 +1,42 @@
 import 'package:intl/intl.dart';
 
 class FinishedTask {
-  int? _id;
-  String _taskTitle;
-  String? _taskSubmitted;
-  int? _valueOfTask;
+  int? id;
+  String? taskTitle;
+  String? taskSubmitted;
+  int? valueOfTask;
 
-  FinishedTask(this._id, this._taskTitle, this._valueOfTask);
+  FinishedTask(
+      {this.id,
+      required this.taskTitle,
+      required this.valueOfTask,
+      required this.taskSubmitted});
 
-  String? get taskTitle => _taskTitle;
-  int? get valueOfTask => _valueOfTask;
+  FinishedTask.fromMap(Map<String, dynamic> res)
+      : id = res["id"],
+        taskTitle = res["task_title"],
+        taskSubmitted = res["task_submitted"],
+        valueOfTask = res["task_value"];
 
-  void setTaskSubmitted(DateTime timeNow) {
-    DateFormat format = DateFormat("yyyy-MM-dd - kk:mm:ss");
-    _taskSubmitted = format.format(timeNow);
+  Map<String, Object?> toMap() {
+    return {
+      'id': id,
+      'task_title': taskTitle,
+      'task_submitted': taskSubmitted,
+      'task_value': valueOfTask
+    };
   }
 
-  String? get taskSubmitted => _taskSubmitted;
+  // String? get taskTitle => _taskTitle;
+  // int? get valueOfTask => _valueOfTask;
+
+  String? setTaskSubmitted(DateTime timeNow) {
+    DateFormat format = DateFormat("yyyy-MM-dd - kk:mm:ss");
+    taskSubmitted = format.format(timeNow);
+
+    return taskSubmitted;
+  }
+
+  //String? get taskSubmitted => _taskSubmitted;
+
 }

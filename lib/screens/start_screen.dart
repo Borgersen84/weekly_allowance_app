@@ -1,3 +1,4 @@
+import 'package:esther_money_app/database/db_helper.dart';
 import 'package:esther_money_app/models/finished_task.dart';
 import 'package:esther_money_app/models/new_task.dart';
 import 'package:esther_money_app/utilities/task_list.dart';
@@ -9,6 +10,7 @@ import 'package:esther_money_app/widgets/menuitems/menu_item_row.dart';
 import 'package:esther_money_app/widgets/menuitems/menu_item_container.dart';
 import 'package:esther_money_app/models/weekly_money_model.dart';
 import 'package:esther_money_app/utilities/weekly_sum_calculator.dart';
+import 'package:intl/intl.dart';
 import 'package:week_of_year/week_of_year.dart';
 
 class StartScreen extends StatefulWidget {
@@ -26,11 +28,18 @@ class _StartScreenState extends State<StartScreen> {
   WeeklyMoney moneyWeekly =
       WeeklyMoney("Vecka " + DateTime.now().weekOfYear.toString());
 
+  late DatabaseHelper handler;
+
   @override
   void initState() {
     super.initState();
-    FinishedTask testTask = FinishedTask(1, "promp", 1);
-    taskList.testFunctionForDb(testTask, finishedTasks);
+    this.handler = DatabaseHelper();
+    //this.handler.clearTable();
+    this.handler.initializeDB().whenComplete(() async {
+      tasks = await this.handler.retrieveTasks(tasks);
+      taskList.addTasks(tasks, finishedTasks);
+      setState(() {});
+    });
 
     newTasks = taskList.taskList;
 
@@ -44,6 +53,21 @@ class _StartScreenState extends State<StartScreen> {
       tasksToAdd.add(tile);
     }
   }
+
+  /*Future<int> addTasks() async {
+    print("inside addTasks");
+    FinishedTask taskOne = FinishedTask(
+        taskTitle: "Diska",
+        valueOfTask: 5,
+        taskSubmitted: setTaskSubmitted(DateTime.now()));
+    FinishedTask taskTwo = FinishedTask(
+        taskTitle: "Fjerta",
+        valueOfTask: 5,
+        taskSubmitted: setTaskSubmitted(DateTime.now()));
+    List<FinishedTask> listOfTasks = [taskOne, taskTwo];
+    //tasks = listOfTasks;
+    return await this.handler.insertTask(listOfTasks);
+  }*/
 
   List<DropdownMenuItem> addItems() {
     DropdownMenuItem dropDown = DropdownMenuItem(
@@ -102,8 +126,8 @@ class _StartScreenState extends State<StartScreen> {
                         return GestureDetector(
                           onTap: () {
                             setState(() {});
-                            taskList.addTaskToList(
-                                newTasks, index, finishedTasks, tasks, context);
+                            taskList.addTaskToList(this.handler, newTasks,
+                                index, finishedTasks, tasks, context);
                           },
                           child: AddTaskCard(
                             tasksToAdd: tasksToAdd,
