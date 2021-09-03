@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 
 class WeeklyMoneyTask {
   String? taskName;
-  Icon taskIcon;
+  //Icon taskIcon;
 
-  WeeklyMoneyTask({this.taskName, required this.taskIcon});
+  WeeklyMoneyTask({
+    this.taskName,
+    /*required this.taskIcon}*/
+  });
 }

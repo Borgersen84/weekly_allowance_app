@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
-class WeekViewer extends StatelessWidget {
+class WeekViewer extends StatefulWidget {
+  @override
+  _WeekViewerState createState() => _WeekViewerState();
+}
+
+class _WeekViewerState extends State<WeekViewer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -8,7 +13,7 @@ class WeekViewer extends StatelessWidget {
       body: Center(
         child: ElevatedButton(
           child: Text(
-            "Click here to release farts",
+            "Click here to return",
             style: TextStyle(
               fontSize: 20.0,
               color: Colors.black,

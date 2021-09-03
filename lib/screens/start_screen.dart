@@ -1,4 +1,4 @@
-import 'package:esther_money_app/database/db_helper.dart';
+import 'package:esther_money_app/database/db_handler.dart';
 import 'package:esther_money_app/models/finished_task.dart';
 import 'package:esther_money_app/models/new_task.dart';
 import 'package:esther_money_app/utilities/task_list.dart';
@@ -10,7 +10,6 @@ import 'package:esther_money_app/widgets/menuitems/menu_item_row.dart';
 import 'package:esther_money_app/widgets/menuitems/menu_item_container.dart';
 import 'package:esther_money_app/models/weekly_money_model.dart';
 import 'package:esther_money_app/utilities/weekly_sum_calculator.dart';
-import 'package:intl/intl.dart';
 import 'package:week_of_year/week_of_year.dart';
 
 class StartScreen extends StatefulWidget {
@@ -20,26 +19,38 @@ class StartScreen extends StatefulWidget {
 
 class _StartScreenState extends State<StartScreen> {
   ListTile tile = ListTile();
-  List<ListTile> finishedTasks = [];
+  List<ListTile> finishedTaskTiles = [];
   List<ListTile> tasksToAdd = [];
   List<NewTask> newTasks = [];
-  List<FinishedTask> tasks = [];
+  List<FinishedTask> finishedTasks = [];
   TaskList taskList = TaskList();
   WeeklyMoney moneyWeekly =
       WeeklyMoney("Vecka " + DateTime.now().weekOfYear.toString());
 
-  late DatabaseHelper handler;
+  late DatabaseHandler handler;
+
+  int numberOfCleaningsDone = 0;
+  int numberOfDishesDone = 0;
+  int numberOfTakingOutTrashDone = 0;
 
   @override
   void initState() {
     super.initState();
-    this.handler = DatabaseHelper();
-    //this.handler.clearTable();
+    this.handler = DatabaseHandler();
+    //this.handler.clearDatabase();
     this.handler.initializeDB().whenComplete(() async {
-      tasks = await this.handler.retrieveTasks(tasks);
-      taskList.addTasks(tasks, finishedTasks);
+      finishedTasks = await this.handler.retrieveTasks(finishedTasks);
+      finishedTasks = taskList.revertListForTaskTiles(finishedTasks);
+      taskList.updateTaskList(finishedTasks, finishedTaskTiles);
       setState(() {});
     });
+
+    numberOfCleaningsDone = findNumberOfTasksDone(
+        finishedTasks, moneyWeekly.cleaningTask.taskName!);
+    numberOfDishesDone =
+        findNumberOfTasksDone(finishedTasks, moneyWeekly.dishesTask.taskName!);
+    numberOfTakingOutTrashDone = findNumberOfTasksDone(
+        finishedTasks, moneyWeekly.takeOutTrashTask.taskName!);
 
     newTasks = taskList.taskList;
 
@@ -54,20 +65,25 @@ class _StartScreenState extends State<StartScreen> {
     }
   }
 
-  /*Future<int> addTasks() async {
-    print("inside addTasks");
-    FinishedTask taskOne = FinishedTask(
-        taskTitle: "Diska",
-        valueOfTask: 5,
-        taskSubmitted: setTaskSubmitted(DateTime.now()));
-    FinishedTask taskTwo = FinishedTask(
-        taskTitle: "Fjerta",
-        valueOfTask: 5,
-        taskSubmitted: setTaskSubmitted(DateTime.now()));
-    List<FinishedTask> listOfTasks = [taskOne, taskTwo];
-    //tasks = listOfTasks;
-    return await this.handler.insertTask(listOfTasks);
-  }*/
+  void deleteTask(int index) async {
+    finishedTasks = await handler.retrieveTasks(finishedTasks);
+    finishedTasks = taskList.revertListForTaskTiles(finishedTasks);
+    this.handler.deleteTask(finishedTasks[index].id!);
+    finishedTasks = await handler.retrieveTasks(finishedTasks);
+    finishedTasks = taskList.revertListForTaskTiles(finishedTasks);
+    setState(() {});
+    taskList.updateTaskList(finishedTasks, finishedTaskTiles);
+  }
+
+  int findNumberOfTasksDone(List<FinishedTask> taskList, String taskName) {
+    int num = 0;
+    for (var task in taskList) {
+      if (task.taskTitle == taskName) {
+        num += 1;
+      }
+    }
+    return num;
+  }
 
   List<DropdownMenuItem> addItems() {
     DropdownMenuItem dropDown = DropdownMenuItem(
@@ -126,8 +142,13 @@ class _StartScreenState extends State<StartScreen> {
                         return GestureDetector(
                           onTap: () {
                             setState(() {});
-                            taskList.addTaskToList(this.handler, newTasks,
-                                index, finishedTasks, tasks, context);
+                            taskList.addTaskToList(
+                                this.handler,
+                                newTasks,
+                                index,
+                                finishedTaskTiles,
+                                finishedTasks,
+                                context);
                           },
                           child: AddTaskCard(
                             tasksToAdd: tasksToAdd,
@@ -140,7 +161,7 @@ class _StartScreenState extends State<StartScreen> {
               });
         },
       ),
-      body: finishedTasks.length > 0
+      body: finishedTaskTiles.length > 0
           ? _mainBody()
           : Center(
               child: Text("Listan är tom. Du måste jobba"),
@@ -156,12 +177,15 @@ class _StartScreenState extends State<StartScreen> {
           flex: 3,
           child: ListView.builder(
               padding: EdgeInsets.all(8.0),
-              itemCount: finishedTasks.length,
+              itemCount: finishedTaskTiles.length,
               itemBuilder: (context, index) {
-                return FinishedTaskCard(
-                  finishedTasks: finishedTasks,
-                  indexOfList: index,
-                  elevationOfCard: 7.0,
+                return GestureDetector(
+                  child: FinishedTaskCard(
+                    finishedTaskTiles: finishedTaskTiles,
+                    indexOfList: index,
+                    elevationOfCard: 7.0,
+                  ),
+                  onLongPress: () => deleteTask(index),
                 );
               }),
         ),
@@ -198,8 +222,17 @@ class _StartScreenState extends State<StartScreen> {
                         return Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(moneyWeekly.weeklyTasks[index].taskName!),
-                            moneyWeekly.weeklyTasks[index].taskIcon,
+                            Text(
+                              moneyWeekly.weeklyTasks[index].taskName! +
+                                  ": " +
+                                  findNumberOfTasksDone(
+                                          finishedTasks,
+                                          moneyWeekly
+                                              .weeklyTasks[index].taskName!)
+                                      .toString() +
+                                  " count",
+                            ),
+                            //moneyWeekly.weeklyTasks[index].taskIcon,
                           ],
                         );
                       }),
@@ -208,12 +241,13 @@ class _StartScreenState extends State<StartScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
+                      /*Icon(
                         Icons.attach_money,
                         size: 25.0,
-                      ),
+                      ),*/
                       Text(
-                        WeeklySumCalculator.calculateSum(tasks).toString() +
+                        WeeklySumCalculator.calculateSum(finishedTasks)
+                                .toString() +
                             " SEK",
                         style: TextStyle(fontSize: 25.0),
                       )
@@ -262,14 +296,15 @@ class AddTaskCard extends StatelessWidget {
 }
 
 class FinishedTaskCard extends StatelessWidget {
-  final List<ListTile> finishedTasks;
+  final List<ListTile> finishedTaskTiles;
   final int indexOfList;
   final double elevationOfCard;
 
-  FinishedTaskCard(
-      {required this.finishedTasks,
-      required this.indexOfList,
-      required this.elevationOfCard});
+  FinishedTaskCard({
+    required this.finishedTaskTiles,
+    required this.indexOfList,
+    required this.elevationOfCard,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -282,7 +317,7 @@ class FinishedTaskCard extends StatelessWidget {
       child: Card(
         elevation: elevationOfCard,
         color: Color(0xFFF7AEF8),
-        child: finishedTasks[indexOfList],
+        child: finishedTaskTiles[indexOfList],
       ),
     );
   }

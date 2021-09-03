@@ -4,9 +4,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
-class DatabaseHelper {
+class DatabaseHandler {
   Future<Database> initializeDB() async {
-    print("INITIALIZING");
     String path = await getDatabasesPath();
     return openDatabase(
       join(path, 'tasks_database.db'),
@@ -32,6 +31,7 @@ class DatabaseHelper {
     int result = 0;
     final Database db = await initializeDB();
     result = await db.insert('tasks', task.toMap());
+    print("if of new task " + task.id.toString());
 
     return result;
   }
@@ -51,9 +51,11 @@ class DatabaseHelper {
       where: "id = ?",
       whereArgs: [id],
     );
+
+    print("Id on delete " + id.toString());
   }
 
-  Future<void> clearTable() async {
+  Future<void> clearDatabase() async {
     final directory = await getApplicationDocumentsDirectory();
     final path = join(directory.path, 'tasks_database.db');
     await deleteDatabase(path);

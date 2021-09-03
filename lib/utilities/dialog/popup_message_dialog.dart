@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class PopupMessageDialog {
-  static showAlertDialog(BuildContext context, String message) {
-    final String title = "Woopsie..";
+  static showAlertDialog(BuildContext context, String message, String title) {
+    //final String title = "Woopsie..";
     final String buttonText = "OK";
 
     AlertDialog alert = AlertDialog(

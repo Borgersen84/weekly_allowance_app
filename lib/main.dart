@@ -3,6 +3,7 @@ import 'package:esther_money_app/screens/weeks_viewer_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
 

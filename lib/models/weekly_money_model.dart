@@ -5,14 +5,17 @@ class WeeklyMoney {
   String? weekNumber;
   List<WeeklyMoneyTask> _weeklyTasks = [];
 
-  WeeklyMoneyTask cleaningTask =
-      WeeklyMoneyTask(taskName: "Städat rummet", taskIcon: Icon(Icons.email));
+  WeeklyMoneyTask cleaningTask = WeeklyMoneyTask(
+    taskName: "Städa rummet", /*taskIcon: Icon(Icons.email)*/
+  );
 
-  WeeklyMoneyTask dishesTask =
-      WeeklyMoneyTask(taskName: "Diskat", taskIcon: Icon(Icons.email));
+  WeeklyMoneyTask dishesTask = WeeklyMoneyTask(
+    taskName: "Disk", /*taskIcon: Icon(Icons.email)*/
+  );
 
-  WeeklyMoneyTask takeOutTrashTask =
-      WeeklyMoneyTask(taskName: "Tagit ut sopor", taskIcon: Icon(Icons.email));
+  WeeklyMoneyTask takeOutTrashTask = WeeklyMoneyTask(
+    taskName: "Ta ut sopor", /*taskIcon: Icon(Icons.email)*/
+  );
 
   WeeklyMoney(String weekNumber) {
     this.weekNumber = weekNumber;
