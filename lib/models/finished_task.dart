@@ -27,16 +27,10 @@ class FinishedTask {
     };
   }
 
-  // String? get taskTitle => _taskTitle;
-  // int? get valueOfTask => _valueOfTask;
-
   String? setTaskSubmitted(DateTime timeNow) {
     DateFormat format = DateFormat("yyyy-MM-dd - kk:mm:ss");
     taskSubmitted = format.format(timeNow);
 
     return taskSubmitted;
   }
-
-  //String? get taskSubmitted => _taskSubmitted;
-
 }

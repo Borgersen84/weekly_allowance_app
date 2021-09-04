@@ -1,6 +1,5 @@
 import 'package:esther_money_app/database/db_handler.dart';
 import 'package:esther_money_app/models/new_task.dart';
-import 'package:esther_money_app/screens/start_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:esther_money_app/models/finished_task.dart';
 import 'package:esther_money_app/utilities/dialog/popup_message_dialog.dart';
@@ -45,7 +44,6 @@ class TaskList {
     if (!_checkForDuplicate(tasks, newTask.taskTitle!)) {
       handler.insertSingleTask(newTask);
       tasks.insert(0, newTask);
-      //newTask.setTaskSubmitted(DateTime.now());
       ListTile tile = ListTile(
         title: Text(newTask.taskTitle!),
         subtitle: Text("Värde: " + newTask.valueOfTask.toString() + " SEK"),
@@ -59,18 +57,8 @@ class TaskList {
 
   void updateTaskList(
       List<FinishedTask> finishedTasks, List<ListTile> finishedTaskTiles) {
-    //finishedTasks = await handler.retrieveTasks(finishedTasks);
-    //finishedTasks = revertListForTaskTiles(finishedTasks);
     finishedTaskTiles.clear();
-
     for (var task in finishedTasks) {
-      /*ListTile tile = ListTile(
-        title: Text(task.taskTitle!),
-        subtitle: Text("Värde: " + task.valueOfTask.toString() + " SEK"),
-        trailing: Text(task.taskSubmitted!),
-      );
-      finishedTaskTiles.insert(0, tile);*/
-      //print(task.taskTitle);
       addTaskToTaskTile(task, finishedTaskTiles);
     }
   }
@@ -93,31 +81,6 @@ class TaskList {
 
     return list;
   }
-
-  void deleteTask(
-      DatabaseHandler handler, BuildContext context, List<FinishedTask> list) {}
-
-  /*void testFunctionForDb(FinishedTask task, List<ListTile> finishedTasks) {
-    ListTile tile = ListTile(
-      title: Text(task.taskTitle!),
-      subtitle: Text("Värde: " + task.valueOfTask.toString() + " SEK"),
-      trailing: Text(task.taskSubmitted!),
-    );
-    finishedTasks.insert(0, tile);
-  }
-
-  void testFunctionForDbTwo(
-      List<FinishedTask> finishedTasks, List<ListTile> finishedTaskTiles) {
-    print("test : " + finishedTasks.length.toString());
-    for (var task in finishedTasks) {
-      ListTile tile = ListTile(
-        title: Text(task.taskTitle!),
-        subtitle: Text("Värde: " + task.valueOfTask.toString() + " SEK"),
-        trailing: Text(task.taskSubmitted!),
-      );
-      finishedTaskTiles.insert(0, tile);
-    }
-  }*/
 
   bool _checkForDuplicate(List<FinishedTask> tasks, String newTaskTitle) {
     String forbiddenTwice = "Städa rummet";
