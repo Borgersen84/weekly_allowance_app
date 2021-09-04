@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class DropDownMenuButton extends StatelessWidget {
+/*class DropDownMenuButton extends StatelessWidget {
   final List<DropdownMenuItem> menuItems;
 
   DropDownMenuButton(this.menuItems);
@@ -19,8 +19,9 @@ class DropDownMenuButton extends StatelessWidget {
       iconSize: 35.0,
       items: menuItems,
       onChanged: (_) {
-        Navigator.pushNamed(context, "/weeks");
+        //Navigator.pushNamed(context, "/weeks");
       },
+      onTap: () => Navigator.pushNamed(context, "/weeks"),
     );
   }
-}
+}*/

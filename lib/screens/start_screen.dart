@@ -87,7 +87,7 @@ class _StartScreenState extends State<StartScreen> {
     return num;
   }
 
-  List<DropdownMenuItem> addItems() {
+  /* List<DropdownMenuItem> addItems() {
     DropdownMenuItem dropDown = DropdownMenuItem(
       child: MenuItemContainer(
         MenuItemRow("Last week", kMenuIcon),
@@ -97,7 +97,7 @@ class _StartScreenState extends State<StartScreen> {
     menuItems.add(dropDown);
 
     return menuItems;
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -115,8 +115,12 @@ class _StartScreenState extends State<StartScreen> {
           ),
         ),
         actions: [
-          DropDownMenuButton(
+          /*DropDownMenuButton(
             addItems(),
+          ),*/
+          GestureDetector(
+            child: Icon(Icons.adb_rounded, color: Color(0xFF9FE7F9), size: 45),
+            onTap: () => Navigator.pushNamed(context, "/weeks"),
           ),
         ],
       ),
