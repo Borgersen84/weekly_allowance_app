@@ -1,5 +1,4 @@
 import 'package:esther_money_app/models/finished_task.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -31,7 +30,6 @@ class DatabaseHandler {
     int result = 0;
     final Database db = await initializeDB();
     result = await db.insert('tasks', task.toMap());
-    print("if of new task " + task.id.toString());
 
     return result;
   }
@@ -39,7 +37,6 @@ class DatabaseHandler {
   Future<List<FinishedTask>> retrieveTasks(List<FinishedTask> taskList) async {
     final Database db = await initializeDB();
     final List<Map<String, Object?>> queryResult = await db.query('tasks');
-    print(queryResult.length);
     taskList = queryResult.map((e) => FinishedTask.fromMap(e)).toList();
     return queryResult.map((e) => FinishedTask.fromMap(e)).toList();
   }
@@ -51,8 +48,6 @@ class DatabaseHandler {
       where: "id = ?",
       whereArgs: [id],
     );
-
-    print("Id on delete " + id.toString());
   }
 
   Future<void> clearDatabase() async {

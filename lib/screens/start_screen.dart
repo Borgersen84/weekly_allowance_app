@@ -38,22 +38,12 @@ class _StartScreenState extends State<StartScreen> {
     super.initState();
     this.handler = DatabaseHandler();
     //this.handler.clearDatabase();
-    this.handler.initializeDB().whenComplete(() async {
-      finishedTasks = await this.handler.retrieveTasks(finishedTasks);
-      finishedTasks = taskList.revertListForTaskTiles(finishedTasks);
-      taskList.updateTaskList(finishedTasks, finishedTaskTiles);
-      setState(() {});
-    });
-
-    numberOfCleaningsDone = findNumberOfTasksDone(
-        finishedTasks, moneyWeekly.cleaningTask.taskName!);
-    numberOfDishesDone =
-        findNumberOfTasksDone(finishedTasks, moneyWeekly.dishesTask.taskName!);
-    numberOfTakingOutTrashDone = findNumberOfTasksDone(
-        finishedTasks, moneyWeekly.takeOutTrashTask.taskName!);
-
+    initiateDatabaseOnStartup();
     newTasks = taskList.taskList;
+    addNewTasksToFloatingButtonMenu();
+  }
 
+  void addNewTasksToFloatingButtonMenu() {
     for (NewTask task in newTasks) {
       tile = ListTile(
         title: Text(task.taskTitle),
@@ -65,14 +55,25 @@ class _StartScreenState extends State<StartScreen> {
     }
   }
 
+  void initiateDatabaseOnStartup() {
+    this.handler.initializeDB().whenComplete(() async {
+      finishedTasks = await this.handler.retrieveTasks(finishedTasks);
+      finishedTasks = taskList.revertListForTaskTiles(finishedTasks);
+      setState(() {
+        taskList.updateTaskList(finishedTasks, finishedTaskTiles);
+      });
+    });
+  }
+
   void deleteTask(int index) async {
     finishedTasks = await handler.retrieveTasks(finishedTasks);
     finishedTasks = taskList.revertListForTaskTiles(finishedTasks);
     this.handler.deleteTask(finishedTasks[index].id!);
     finishedTasks = await handler.retrieveTasks(finishedTasks);
     finishedTasks = taskList.revertListForTaskTiles(finishedTasks);
-    setState(() {});
-    taskList.updateTaskList(finishedTasks, finishedTaskTiles);
+    setState(() {
+      taskList.updateTaskList(finishedTasks, finishedTaskTiles);
+    });
   }
 
   int findNumberOfTasksDone(List<FinishedTask> taskList, String taskName) {
@@ -82,6 +83,7 @@ class _StartScreenState extends State<StartScreen> {
         num += 1;
       }
     }
+
     return num;
   }
 
