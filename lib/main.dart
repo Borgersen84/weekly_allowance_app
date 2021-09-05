@@ -19,7 +19,9 @@ class MyApp extends StatelessWidget {
   Map<String, Widget Function(BuildContext)> appRoutes() {
     return {
       "/": (context) => StartScreen(),
-      "/weeks": (context) => WeekViewer(),
+      "/weeks": (context) => WeekViewer(
+            finishedTasks: [],
+          ),
     };
   }
 }

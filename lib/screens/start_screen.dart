@@ -1,6 +1,7 @@
 import 'package:esther_money_app/database/db_handler.dart';
 import 'package:esther_money_app/models/finished_task.dart';
 import 'package:esther_money_app/models/new_task.dart';
+import 'package:esther_money_app/screens/weeks_viewer_screen.dart';
 import 'package:esther_money_app/utilities/task_list.dart';
 import 'package:flutter/material.dart';
 import 'dart:core';
@@ -123,7 +124,12 @@ class _StartScreenState extends State<StartScreen> {
           GestureDetector(
             child: Icon(Icons.calendar_view_day_rounded,
                 color: Color(0xFF9FE7F9), size: 45),
-            onTap: () => Navigator.pushNamed(context, "/weeks"),
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => WeekViewer(finishedTasks: finishedTasks),
+              ),
+            ),
           ),
         ],
       ),
