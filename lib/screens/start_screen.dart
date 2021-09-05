@@ -3,11 +3,8 @@ import 'package:esther_money_app/models/finished_task.dart';
 import 'package:esther_money_app/models/new_task.dart';
 import 'package:esther_money_app/utilities/task_list.dart';
 import 'package:flutter/material.dart';
-import 'package:esther_money_app/widgets/drop_down_button.dart';
 import 'dart:core';
 import 'package:esther_money_app/utilities/constants.dart';
-import 'package:esther_money_app/widgets/menuitems/menu_item_row.dart';
-import 'package:esther_money_app/widgets/menuitems/menu_item_container.dart';
 import 'package:esther_money_app/models/weekly_money_model.dart';
 import 'package:esther_money_app/utilities/weekly_sum_calculator.dart';
 import 'package:week_of_year/week_of_year.dart';
@@ -25,7 +22,7 @@ class _StartScreenState extends State<StartScreen> {
   List<FinishedTask> finishedTasks = [];
   TaskList taskList = TaskList();
   WeeklyMoney moneyWeekly =
-      WeeklyMoney("Vecka " + DateTime.now().weekOfYear.toString());
+      WeeklyMoney(WEEK_TEXT + DateTime.now().weekOfYear.toString());
 
   late DatabaseHandler handler;
 
@@ -47,7 +44,7 @@ class _StartScreenState extends State<StartScreen> {
     for (NewTask task in newTasks) {
       tile = ListTile(
         title: Text(task.taskTitle),
-        subtitle: Text("Värde: " + task.taskValue.toString()),
+        subtitle: Text(VALUE_TEXT + task.taskValue.toString()),
         trailing: task.taskIcon,
       );
 
@@ -107,7 +104,7 @@ class _StartScreenState extends State<StartScreen> {
         centerTitle: true,
         backgroundColor: Color(0xFFB388EB),
         title: Text(
-          "Esther's lista",
+          MAIN_SCREEN_TITLE,
           style: TextStyle(
             fontSize: 23.0,
             fontWeight: FontWeight.bold,
@@ -119,7 +116,8 @@ class _StartScreenState extends State<StartScreen> {
             addItems(),
           ),*/
           GestureDetector(
-            child: Icon(Icons.adb_rounded, color: Color(0xFF9FE7F9), size: 45),
+            child: Icon(Icons.calendar_view_day_rounded,
+                color: Color(0xFF9FE7F9), size: 45),
             onTap: () => Navigator.pushNamed(context, "/weeks"),
           ),
         ],
@@ -170,7 +168,7 @@ class _StartScreenState extends State<StartScreen> {
       body: finishedTaskTiles.length > 0
           ? _mainBody()
           : Center(
-              child: Text("Listan är tom. Du måste jobba"),
+              child: Text(EMPTY_LIST_MESSAGE),
             ),
     );
   }
@@ -254,7 +252,7 @@ class _StartScreenState extends State<StartScreen> {
                       Text(
                         WeeklySumCalculator.calculateSum(finishedTasks)
                                 .toString() +
-                            " SEK",
+                            SEK_TEXT,
                         style: TextStyle(fontSize: 25.0),
                       )
                     ],
