@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:esther_money_app/models/finished_task.dart';
 import 'package:esther_money_app/utilities/dialog/popup_message_dialog.dart';
 import 'package:intl/intl.dart';
+import 'package:esther_money_app/utilities/constants.dart';
 
 class TaskList {
   final String titleMessage = "Woopsie..";
@@ -46,7 +47,7 @@ class TaskList {
       tasks.insert(0, newTask);
       ListTile tile = ListTile(
         title: Text(newTask.taskTitle!),
-        subtitle: Text("Värde: " + newTask.valueOfTask.toString() + " SEK"),
+        subtitle: Text(VALUE_TEXT + newTask.valueOfTask.toString() + SEK_TEXT),
         trailing: Text(newTask.taskSubmitted.toString()),
       );
       finishedTasks.insert(0, tile);
@@ -66,7 +67,7 @@ class TaskList {
   void addTaskToTaskTile(FinishedTask task, List<ListTile> listTiles) {
     ListTile tile = ListTile(
       title: Text(task.taskTitle!),
-      subtitle: Text("Värde: " + task.valueOfTask.toString() + " SEK"),
+      subtitle: Text(VALUE_TEXT + task.valueOfTask.toString() + SEK_TEXT),
       trailing: Text(task.taskSubmitted!),
     );
     listTiles.add(tile);
@@ -83,9 +84,9 @@ class TaskList {
   }
 
   bool _checkForDuplicate(List<FinishedTask> tasks, String newTaskTitle) {
-    String forbiddenTwice = "Städa rummet";
     for (FinishedTask t in tasks) {
-      if (t.taskTitle == forbiddenTwice && newTaskTitle == forbiddenTwice) {
+      if (t.taskTitle == FORBIDDEN_TWICE_TASK &&
+          newTaskTitle == FORBIDDEN_TWICE_TASK) {
         return true;
       }
     }
