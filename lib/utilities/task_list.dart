@@ -5,6 +5,7 @@ import 'package:esther_money_app/models/finished_task.dart';
 import 'package:esther_money_app/utilities/dialog/popup_message_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:esther_money_app/utilities/constants.dart';
+import 'package:week_of_year/week_of_year.dart';
 
 class TaskList {
   final String titleMessage = "Woopsie..";
@@ -41,7 +42,8 @@ class TaskList {
     FinishedTask newTask = FinishedTask(
         taskTitle: task.taskTitle,
         valueOfTask: task.taskValue,
-        taskSubmitted: setTaskSubmitted(DateTime.now()));
+        taskSubmitted: setTaskSubmitted(DateTime.now()),
+        weekNumber: DateTime.now().weekOfYear);
     if (!_checkForDuplicate(tasks, newTask.taskTitle!)) {
       handler.insertSingleTask(newTask);
       tasks.insert(0, newTask);
@@ -56,11 +58,13 @@ class TaskList {
     }
   }
 
-  void updateTaskList(
-      List<FinishedTask> finishedTasks, List<ListTile> finishedTaskTiles) {
+  void updateTaskList(List<FinishedTask> finishedTasks,
+      List<ListTile> finishedTaskTiles, int weekNumber) {
     finishedTaskTiles.clear();
     for (var task in finishedTasks) {
-      addTaskToTaskTile(task, finishedTaskTiles);
+      if (task.weekNumber == weekNumber) {
+        addTaskToTaskTile(task, finishedTaskTiles);
+      }
     }
   }
 

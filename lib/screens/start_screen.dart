@@ -21,8 +21,12 @@ class _StartScreenState extends State<StartScreen> {
   List<NewTask> newTasks = [];
   List<FinishedTask> finishedTasks = [];
   TaskList taskList = TaskList();
-  WeeklyMoney moneyWeekly =
-      WeeklyMoney(WEEK_TEXT + DateTime.now().weekOfYear.toString());
+
+  static int weekOfTheYear = DateTime.now().weekOfYear;
+  //static int weekOfTheYear = 39;
+  static String weekOfYearStr = weekOfTheYear.toString();
+
+  WeeklyMoney moneyWeekly = WeeklyMoney(WEEK_TEXT + weekOfYearStr);
 
   late DatabaseHandler handler;
 
@@ -57,7 +61,8 @@ class _StartScreenState extends State<StartScreen> {
       finishedTasks = await this.handler.retrieveTasks(finishedTasks);
       finishedTasks = taskList.revertListForTaskTiles(finishedTasks);
       setState(() {
-        taskList.updateTaskList(finishedTasks, finishedTaskTiles);
+        taskList.updateTaskList(
+            finishedTasks, finishedTaskTiles, weekOfTheYear);
       });
     });
   }
@@ -69,7 +74,7 @@ class _StartScreenState extends State<StartScreen> {
     finishedTasks = await handler.retrieveTasks(finishedTasks);
     finishedTasks = taskList.revertListForTaskTiles(finishedTasks);
     setState(() {
-      taskList.updateTaskList(finishedTasks, finishedTaskTiles);
+      taskList.updateTaskList(finishedTasks, finishedTaskTiles, weekOfTheYear);
     });
   }
 
@@ -213,7 +218,7 @@ class _StartScreenState extends State<StartScreen> {
                   padding: EdgeInsets.all(8.0),
                   child: Center(
                     child: Text(
-                      moneyWeekly.weekNumber!,
+                      WEEK_TEXT + weekOfYearStr,
                       style: TextStyle(fontSize: 20.0),
                     ),
                   ),

@@ -10,7 +10,7 @@ class DatabaseHandler {
       join(path, 'tasks_database.db'),
       onCreate: (database, version) async {
         await database.execute(
-          "CREATE TABLE tasks(id INTEGER PRIMARY KEY AUTOINCREMENT, task_title TEXT NOT NULL, task_submitted TEXT NOT NULL, task_value INTEGER)",
+          "CREATE TABLE tasks(id INTEGER PRIMARY KEY AUTOINCREMENT, task_title TEXT NOT NULL, task_submitted TEXT NOT NULL, task_value INTEGER, week_number INTEGER)",
         );
       },
       version: 1,
