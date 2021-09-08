@@ -77,7 +77,10 @@ class _WeekViewerState extends State<WeekViewer> {
                   IconButton(
                       icon: Icon(Icons.arrow_back_ios_sharp),
                       onPressed: goBackOneWeek),
-                  Text("Vecka " + currentWeek.toString()),
+                  Text(
+                    "Vecka " + currentWeek.toString(),
+                    style: TextStyle(fontSize: 22.0),
+                  ),
                   IconButton(
                       icon: Icon(Icons.arrow_forward_ios_sharp),
                       onPressed: goForwardOneWeek),
@@ -128,17 +131,18 @@ class _WeekViewerState extends State<WeekViewer> {
         borderRadius: BorderRadius.circular(5.0),
       ),
       child: Card(
+        color: Color(0xFF9fe7f9),
         child: ListTile(
           title: Text(
-            /*"Disk"*/ taskName,
+            taskName,
             style: TextStyle(fontSize: 25.0),
           ),
           subtitle: Text(
-            /*"Antal: " + numberOfTasksDone("Disk").toString()*/ numberOfTasks,
-            style: TextStyle(fontSize: 15.0),
+            numberOfTasks,
+            style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
           ),
           trailing: Text(
-            /*"Värde: " + valueOfTasksDone("Disk").toString()*/ taskValue,
+            taskValue,
             style: TextStyle(fontSize: 20.0),
           ),
         ),
