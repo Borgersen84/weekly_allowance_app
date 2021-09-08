@@ -92,67 +92,57 @@ class _WeekViewerState extends State<WeekViewer> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Card(
-                      child: ListTile(
-                        title: Text("Disk"),
-                        subtitle: Text(
-                          "Antal: " + numberOfTasksDone("Disk").toString(),
-                        ),
-                        trailing: Text(
-                          "Värde: " + valueOfTasksDone("Disk").toString(),
-                        ),
-                      ),
-                      elevation: 6,
-                    ),
-                    Card(
-                      child: ListTile(
-                        title: Text("Städa rummet"),
-                        subtitle: Text(
-                          "Antal: " +
-                              numberOfTasksDone("Städa rummet").toString(),
-                        ),
-                        trailing: Text(
-                          "Värde: " +
-                              valueOfTasksDone("Städa rummet").toString(),
-                        ),
-                      ),
-                      elevation: 4,
-                    ),
-                    Card(
-                      child: ListTile(
-                        title: Text("Ta ut sopor"),
-                        subtitle: Text(
-                          "Antal: " +
-                              numberOfTasksDone("Ta ut sopor").toString(),
-                        ),
-                        trailing: Text(
-                          "Värde: " +
-                              valueOfTasksDone("Ta ut sopor").toString(),
-                        ),
-                      ),
-                      elevation: 2,
-                    ),
+                    taskHistoryCard(
+                        "Disk",
+                        "Antal: " + numberOfTasksDone("Disk").toString(),
+                        "Värde: " + valueOfTasksDone("Disk").toString(),
+                        6.0),
+                    taskHistoryCard(
+                        "Städat rummet",
+                        "Antal: " +
+                            numberOfTasksDone("Städa rummet").toString(),
+                        "Värde: " + valueOfTasksDone("Städa rummet").toString(),
+                        4.0),
+                    taskHistoryCard(
+                        "Tagit ut sopor",
+                        "Antal: " + numberOfTasksDone("Ta ut sopor").toString(),
+                        "Värde: " + valueOfTasksDone("Ta ut sopor").toString(),
+                        2.0)
                   ],
                 ),
               ),
             ),
-            /*Expanded(
-              child: ElevatedButton(
-                child: Text(
-                  finishedTasks[0].taskTitle.toString(),
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: Colors.black,
-                  ),
-                ),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-              flex: 3,
-            ),*/
           ],
         ),
+      ),
+    );
+  }
+
+  Container taskHistoryCard(String taskName, String numberOfTasks,
+      String taskValue, double elevation) {
+    return Container(
+      height: 125.0,
+      margin: EdgeInsets.all(3.0),
+      decoration: BoxDecoration(
+        border: Border.all(color: Color(0xFFF7AEF8), width: 4),
+        borderRadius: BorderRadius.circular(5.0),
+      ),
+      child: Card(
+        child: ListTile(
+          title: Text(
+            /*"Disk"*/ taskName,
+            style: TextStyle(fontSize: 25.0),
+          ),
+          subtitle: Text(
+            /*"Antal: " + numberOfTasksDone("Disk").toString()*/ numberOfTasks,
+            style: TextStyle(fontSize: 15.0),
+          ),
+          trailing: Text(
+            /*"Värde: " + valueOfTasksDone("Disk").toString()*/ taskValue,
+            style: TextStyle(fontSize: 20.0),
+          ),
+        ),
+        elevation: elevation,
       ),
     );
   }
