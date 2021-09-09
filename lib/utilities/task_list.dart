@@ -89,8 +89,7 @@ class TaskList {
 
   bool _checkForDuplicate(List<FinishedTask> tasks, String newTaskTitle) {
     for (FinishedTask t in tasks) {
-      if (t.taskTitle == FORBIDDEN_TWICE_TASK &&
-          newTaskTitle == FORBIDDEN_TWICE_TASK) {
+      if (t.taskTitle == TASK_TWO && newTaskTitle == TASK_TWO) {
         return true;
       }
     }

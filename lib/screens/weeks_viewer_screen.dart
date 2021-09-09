@@ -78,7 +78,7 @@ class _WeekViewerState extends State<WeekViewer> {
                       icon: Icon(Icons.arrow_back_ios_sharp),
                       onPressed: goBackOneWeek),
                   Text(
-                    "Vecka " + currentWeek.toString(),
+                    WEEK_TEXT + currentWeek.toString(),
                     style: TextStyle(fontSize: 22.0),
                   ),
                   IconButton(
@@ -96,20 +96,26 @@ class _WeekViewerState extends State<WeekViewer> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     taskHistoryCard(
-                        "Disk",
-                        "Antal: " + numberOfTasksDone("Disk").toString(),
-                        "Värde: " + valueOfTasksDone("Disk").toString(),
+                        TASK_ONE,
+                        QUANTITY_TEXT + numberOfTasksDone(TASK_ONE).toString(),
+                        VALUE_TEXT +
+                            valueOfTasksDone(TASK_ONE).toString() +
+                            SEK_TEXT,
                         6.0),
                     taskHistoryCard(
-                        "Städat rummet",
-                        "Antal: " +
-                            numberOfTasksDone("Städa rummet").toString(),
-                        "Värde: " + valueOfTasksDone("Städa rummet").toString(),
+                        TASK_TWO,
+                        QUANTITY_TEXT + numberOfTasksDone(TASK_TWO).toString(),
+                        VALUE_TEXT +
+                            valueOfTasksDone(TASK_TWO).toString() +
+                            SEK_TEXT,
                         4.0),
                     taskHistoryCard(
-                        "Tagit ut sopor",
-                        "Antal: " + numberOfTasksDone("Ta ut sopor").toString(),
-                        "Värde: " + valueOfTasksDone("Ta ut sopor").toString(),
+                        TASK_THREE,
+                        QUANTITY_TEXT +
+                            numberOfTasksDone(TASK_THREE).toString(),
+                        VALUE_TEXT +
+                            valueOfTasksDone(TASK_THREE).toString() +
+                            SEK_TEXT,
                         2.0)
                   ],
                 ),
