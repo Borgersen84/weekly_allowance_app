@@ -89,7 +89,9 @@ class TaskList {
 
   bool _checkForDuplicate(List<FinishedTask> tasks, String newTaskTitle) {
     for (FinishedTask t in tasks) {
-      if (t.taskTitle == TASK_TWO && newTaskTitle == TASK_TWO) {
+      if (t.taskTitle == TASK_TWO &&
+          newTaskTitle == TASK_TWO &&
+          t.weekNumber == DateTime.now().weekOfYear) {
         return true;
       }
     }

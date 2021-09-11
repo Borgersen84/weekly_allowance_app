@@ -25,7 +25,7 @@ class _StartScreenState extends State<StartScreen> {
   TaskList taskList = TaskList();
 
   static int weekOfTheYear = DateTime.now().weekOfYear;
-  //static int weekOfTheYear = 39;
+  //static int weekOfTheYear = 35;
   static String weekOfYearStr = weekOfTheYear.toString();
 
   WeeklyMoney moneyWeekly = WeeklyMoney(WEEK_TEXT + weekOfYearStr);
@@ -83,7 +83,7 @@ class _StartScreenState extends State<StartScreen> {
   int findNumberOfTasksDone(List<FinishedTask> taskList, String taskName) {
     int num = 0;
     for (var task in taskList) {
-      if (task.taskTitle == taskName) {
+      if (task.taskTitle == taskName && task.weekNumber == weekOfTheYear) {
         num += 1;
       }
     }
@@ -123,8 +123,7 @@ class _StartScreenState extends State<StartScreen> {
             addItems(),
           ),*/
           GestureDetector(
-            child: Icon(Icons.calendar_view_day_rounded,
-                color: Color(0xFF9FE7F9), size: 45),
+            child: Icon(Icons.adb_rounded, color: Color(0xFF9FE7F9), size: 45),
             onTap: () => Navigator.push(
               context,
               MaterialPageRoute(

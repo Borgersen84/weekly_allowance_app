@@ -16,6 +16,15 @@ class _WeekViewerState extends State<WeekViewer> {
   _WeekViewerState({required this.finishedTasks});
 
   int currentWeek = DateTime.now().weekOfYear;
+  List<String> listOfTasks = [];
+
+  @override
+  void initState() {
+    super.initState();
+    listOfTasks.add(TASK_ONE);
+    listOfTasks.add(TASK_TWO);
+    listOfTasks.add(TASK_THREE);
+  }
 
   int numberOfTasksDone(String taskName) {
     int num = 0;
@@ -34,6 +43,23 @@ class _WeekViewerState extends State<WeekViewer> {
       if (task.weekNumber == currentWeek && task.taskTitle == taskName) {
         num += task.valueOfTask!;
       }
+    }
+
+    return num;
+  }
+
+  int getTotalValueOfAllTasksDone() {
+    int num = 0;
+    for (var s in listOfTasks) {
+      num += valueOfTasksDone(s);
+    }
+    return num;
+  }
+
+  int getTotalNumberOfTasksDone() {
+    int num = 0;
+    for (var s in listOfTasks) {
+      num += numberOfTasksDone(s);
     }
 
     return num;
@@ -121,6 +147,47 @@ class _WeekViewerState extends State<WeekViewer> {
                 ),
               ),
             ),
+            Expanded(
+              flex: 2,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Color(0xFF8093F1),
+                  border: Border.all(color: Color(0xFFF7AEF8), width: 4.0),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
+                        child: Text(
+                          "TOTAL",
+                          style: TextStyle(fontSize: 20.0),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text("Totalt antal utförda uppgifter: " +
+                          getTotalNumberOfTasksDone().toString()),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 40.0),
+                      child: Text("Pengar gjort: " +
+                          getTotalValueOfAllTasksDone().toString() +
+                          SEK_TEXT),
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 6.0,
+                      child: Container(
+                        color: Color(0xFFF7AEF8),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )
           ],
         ),
       ),
