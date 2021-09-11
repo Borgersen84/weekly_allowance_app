@@ -1,4 +1,4 @@
-import 'package:esther_money_app/widgets/menuitems/menu_item_row.dart';
+/*import 'package:esther_money_app/widgets/menuitems/menu_item_row.dart';
 import 'package:flutter/material.dart';
 
 class MenuItemContainer extends StatelessWidget {
@@ -22,3 +22,5 @@ class MenuItemContainer extends StatelessWidget {
     );
   }
 }
+
+ */

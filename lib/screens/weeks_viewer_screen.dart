@@ -157,25 +157,25 @@ class _WeekViewerState extends State<WeekViewer> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(
-                        child: Text(
-                          "TOTAL",
-                          style: TextStyle(fontSize: 20.0),
-                        ),
+                    Center(
+                      child: WeekViewerPaddedTextField(
+                        padding: EdgeInsets.all(8.0),
+                        text: "Total",
+                        fontSize: 20.0,
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text("Totalt antal utförda uppgifter: " +
-                          getTotalNumberOfTasksDone().toString()),
+                    WeekViewerPaddedTextField(
+                      padding: EdgeInsets.all(8.0),
+                      text: "Totalt antal utförda uppgifter: " +
+                          getTotalNumberOfTasksDone().toString(),
+                      fontSize: 15.0,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 40.0),
-                      child: Text("Pengar gjort: " +
+                    WeekViewerPaddedTextField(
+                      padding: EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 40.0),
+                      text: "Pengar gjort: " +
                           getTotalValueOfAllTasksDone().toString() +
-                          SEK_TEXT),
+                          SEK_TEXT,
+                      fontSize: 15.0,
                     ),
                     SizedBox(
                       width: double.infinity,
@@ -220,6 +220,26 @@ class _WeekViewerState extends State<WeekViewer> {
           ),
         ),
         elevation: elevation,
+      ),
+    );
+  }
+}
+
+class WeekViewerPaddedTextField extends StatelessWidget {
+  final EdgeInsetsGeometry padding;
+  final String text;
+  final double fontSize;
+
+  WeekViewerPaddedTextField(
+      {required this.padding, required this.fontSize, required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: padding,
+      child: Text(
+        text,
+        style: TextStyle(fontSize: fontSize),
       ),
     );
   }
