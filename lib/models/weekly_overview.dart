@@ -1,4 +1,4 @@
-class WeeklyOverView {
+/*class WeeklyOverView {
   int? id;
   int? numberOfCleaningRoom;
   int? numberOfDishes;
@@ -25,3 +25,5 @@ class WeeklyOverView {
     };
   }
 }
+
+ */
