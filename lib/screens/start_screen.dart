@@ -25,7 +25,7 @@ class _StartScreenState extends State<StartScreen> {
   TaskList taskList = TaskList();
 
   static int weekOfTheYear = DateTime.now().weekOfYear;
-  //static int weekOfTheYear = 35;
+  //static int weekOfTheYear = 1;
   static String weekOfYearStr = weekOfTheYear.toString();
 
   WeeklyMoney moneyWeekly = WeeklyMoney(WEEK_TEXT + weekOfYearStr);

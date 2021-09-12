@@ -43,7 +43,9 @@ class TaskList {
         taskTitle: task.taskTitle,
         valueOfTask: task.taskValue,
         taskSubmitted: setTaskSubmitted(DateTime.now()),
-        weekNumber: DateTime.now().weekOfYear);
+        weekNumber: DateTime.now().weekOfYear,
+        yearNumber: DateTime.now().year);
+
     if (!_checkForDuplicate(tasks, newTask.taskTitle!)) {
       handler.insertSingleTask(newTask);
       tasks.insert(0, newTask);

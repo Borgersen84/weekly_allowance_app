@@ -15,7 +15,11 @@ class _WeekViewerState extends State<WeekViewer> {
   List<FinishedTask> finishedTasks;
   _WeekViewerState({required this.finishedTasks});
 
-  int currentWeek = DateTime.now().weekOfYear;
+  DateTime _dateTime = DateTime.now();
+  bool isOutOfRAnge = true;
+
+  int currentWeek = 0;
+  int currentYear = 0;
   List<String> listOfTasks = [];
 
   @override
@@ -24,12 +28,16 @@ class _WeekViewerState extends State<WeekViewer> {
     listOfTasks.add(TASK_ONE);
     listOfTasks.add(TASK_TWO);
     listOfTasks.add(TASK_THREE);
+    currentYear = _dateTime.year;
+    currentWeek = _dateTime.weekOfYear;
   }
 
   int numberOfTasksDone(String taskName) {
     int num = 0;
     for (var task in finishedTasks) {
-      if (task.weekNumber == currentWeek && task.taskTitle == taskName) {
+      if (task.weekNumber == currentWeek &&
+          task.taskTitle == taskName &&
+          task.yearNumber == currentYear) {
         num++;
       }
     }
@@ -40,7 +48,9 @@ class _WeekViewerState extends State<WeekViewer> {
   int valueOfTasksDone(String taskName) {
     int num = 0;
     for (var task in finishedTasks) {
-      if (task.weekNumber == currentWeek && task.taskTitle == taskName) {
+      if (task.weekNumber == currentWeek &&
+          task.taskTitle == taskName &&
+          task.yearNumber == currentYear) {
         num += task.valueOfTask!;
       }
     }
@@ -66,15 +76,25 @@ class _WeekViewerState extends State<WeekViewer> {
   }
 
   void goBackOneWeek() {
+    isOutOfRAnge = false;
     setState(() {
-      currentWeek--;
+      if (currentWeek == 1) {
+        _dateTime = DateTime(currentYear--);
+        currentWeek = _dateTime.weekOfYear;
+      } else
+        currentWeek--;
     });
   }
 
   void goForwardOneWeek() {
-    setState(() {
-      currentWeek++;
-    });
+    if (currentWeek == _dateTime.weekOfYear) {
+      isOutOfRAnge = true;
+    }
+    if (!isOutOfRAnge) {
+      setState(() {
+        currentWeek++;
+      });
+    }
   }
 
   @override
@@ -96,6 +116,11 @@ class _WeekViewerState extends State<WeekViewer> {
       body: Center(
         child: Column(
           children: [
+            WeekViewerPaddedTextField(
+              padding: EdgeInsets.fromLTRB(0, 8.0, 0, 0),
+              fontSize: 20.0,
+              text: currentYear.toString(),
+            ),
             Expanded(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -227,8 +252,8 @@ class _WeekViewerState extends State<WeekViewer> {
 
 class WeekViewerPaddedTextField extends StatelessWidget {
   final EdgeInsetsGeometry padding;
-  final String text;
   final double fontSize;
+  final String text;
 
   WeekViewerPaddedTextField(
       {required this.padding, required this.fontSize, required this.text});
