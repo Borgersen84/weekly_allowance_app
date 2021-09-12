@@ -21,6 +21,8 @@ class _WeekViewerState extends State<WeekViewer> {
   int currentWeek = 0;
   int currentYear = 0;
   List<String> listOfTasks = [];
+  int yearOfFirstTask = 0;
+  int weekOfFirstTask = 0;
 
   @override
   void initState() {
@@ -30,6 +32,17 @@ class _WeekViewerState extends State<WeekViewer> {
     listOfTasks.add(TASK_THREE);
     currentYear = _dateTime.year;
     currentWeek = _dateTime.weekOfYear;
+
+    FinishedTask firstTask = finishedTasks.last;
+    yearOfFirstTask = firstTask.yearNumber!;
+    weekOfFirstTask = firstTask.weekNumber!;
+  }
+
+  bool isBeforeFirstTask(int week, int year) {
+    if (week <= weekOfFirstTask && year <= yearOfFirstTask) {
+      return true;
+    }
+    return false;
   }
 
   int numberOfTasksDone(String taskName) {
@@ -78,11 +91,13 @@ class _WeekViewerState extends State<WeekViewer> {
   void goBackOneWeek() {
     isOutOfRAnge = false;
     setState(() {
-      if (currentWeek == 1) {
-        _dateTime = DateTime(currentYear--);
-        currentWeek = _dateTime.weekOfYear;
-      } else
-        currentWeek--;
+      if (!isBeforeFirstTask(currentWeek, currentYear)) {
+        if (currentWeek == 1) {
+          _dateTime = DateTime(currentYear--);
+          currentWeek = _dateTime.weekOfYear;
+        } else
+          currentWeek--;
+      }
     });
   }
 
