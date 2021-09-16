@@ -40,7 +40,7 @@ class _StartScreenState extends State<StartScreen> {
   void initState() {
     super.initState();
     this.handler = DatabaseHandler();
-    this.handler.clearDatabase();
+    //this.handler.clearDatabase();
     initiateDatabaseOnStartup();
     newTasks = taskList.taskList;
     addNewTasksToFloatingButtonMenu();
