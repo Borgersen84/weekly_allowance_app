@@ -33,9 +33,11 @@ class _WeekViewerState extends State<WeekViewer> {
     currentYear = _dateTime.year;
     currentWeek = _dateTime.weekOfYear;
 
-    FinishedTask firstTask = finishedTasks.last;
-    yearOfFirstTask = firstTask.yearNumber!;
-    weekOfFirstTask = firstTask.weekNumber!;
+    if (finishedTasks.isNotEmpty) {
+      FinishedTask firstTask = finishedTasks.last;
+      yearOfFirstTask = firstTask.yearNumber!;
+      weekOfFirstTask = firstTask.weekNumber!;
+    }
   }
 
   bool isBeforeFirstTask(int week, int year) {
