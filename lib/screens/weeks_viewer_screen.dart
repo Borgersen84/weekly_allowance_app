@@ -131,10 +131,13 @@ class _WeekViewerState extends State<WeekViewer> {
       body: Center(
         child: Column(
           children: [
-            WeekViewerPaddedTextField(
-              padding: EdgeInsets.fromLTRB(0, 8.0, 0, 0),
-              fontSize: 20.0,
-              text: currentYear.toString(),
+            Expanded(
+              flex: 1,
+              child: WeekViewerPaddedTextField(
+                padding: EdgeInsets.fromLTRB(0, 8.0, 0, 0),
+                fontSize: 20.0,
+                text: currentYear.toString(),
+              ),
             ),
             Expanded(
               child: Row(
@@ -155,40 +158,48 @@ class _WeekViewerState extends State<WeekViewer> {
               flex: 1,
             ),
             Expanded(
-              flex: 3,
+              flex: 4,
               child: Container(
                 color: Color(0xFFB388EB),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    taskHistoryCard(
-                        TASK_ONE,
-                        QUANTITY_TEXT + numberOfTasksDone(TASK_ONE).toString(),
-                        VALUE_TEXT +
-                            valueOfTasksDone(TASK_ONE).toString() +
-                            SEK_TEXT,
-                        6.0),
-                    taskHistoryCard(
-                        TASK_TWO,
-                        QUANTITY_TEXT + numberOfTasksDone(TASK_TWO).toString(),
-                        VALUE_TEXT +
-                            valueOfTasksDone(TASK_TWO).toString() +
-                            SEK_TEXT,
-                        4.0),
-                    taskHistoryCard(
-                        TASK_THREE,
-                        QUANTITY_TEXT +
-                            numberOfTasksDone(TASK_THREE).toString(),
-                        VALUE_TEXT +
-                            valueOfTasksDone(TASK_THREE).toString() +
-                            SEK_TEXT,
-                        2.0)
+                    Expanded(
+                      child: taskHistoryCard(
+                          TASK_ONE,
+                          QUANTITY_TEXT +
+                              numberOfTasksDone(TASK_ONE).toString(),
+                          VALUE_TEXT +
+                              valueOfTasksDone(TASK_ONE).toString() +
+                              SEK_TEXT,
+                          6.0),
+                    ),
+                    Expanded(
+                      child: taskHistoryCard(
+                          TASK_TWO,
+                          QUANTITY_TEXT +
+                              numberOfTasksDone(TASK_TWO).toString(),
+                          VALUE_TEXT +
+                              valueOfTasksDone(TASK_TWO).toString() +
+                              SEK_TEXT,
+                          4.0),
+                    ),
+                    Expanded(
+                      child: taskHistoryCard(
+                          TASK_THREE,
+                          QUANTITY_TEXT +
+                              numberOfTasksDone(TASK_THREE).toString(),
+                          VALUE_TEXT +
+                              valueOfTasksDone(TASK_THREE).toString() +
+                              SEK_TEXT,
+                          2.0),
+                    )
                   ],
                 ),
               ),
             ),
             Expanded(
-              flex: 2,
+              flex: 3,
               child: Container(
                 decoration: BoxDecoration(
                   color: Color(0xFF8093F1),
@@ -237,7 +248,7 @@ class _WeekViewerState extends State<WeekViewer> {
   Container taskHistoryCard(String taskName, String numberOfTasks,
       String taskValue, double elevation) {
     return Container(
-      height: 125.0,
+      height: 85.0,
       margin: EdgeInsets.all(3.0),
       decoration: BoxDecoration(
         border: Border.all(color: Color(0xFFF7AEF8), width: 4),
