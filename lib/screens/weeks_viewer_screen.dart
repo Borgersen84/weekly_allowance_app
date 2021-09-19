@@ -27,9 +27,10 @@ class _WeekViewerState extends State<WeekViewer> {
   @override
   void initState() {
     super.initState();
-    listOfTasks.add(TASK_ONE);
+    /*listOfTasks.add(TASK_ONE);
     listOfTasks.add(TASK_TWO);
     listOfTasks.add(TASK_THREE);
+    listOfTasks.add("Anpassad");*/
     currentYear = _dateTime.year;
     currentWeek = _dateTime.weekOfYear;
 
@@ -37,6 +38,14 @@ class _WeekViewerState extends State<WeekViewer> {
       FinishedTask firstTask = finishedTasks.last;
       yearOfFirstTask = firstTask.yearNumber!;
       weekOfFirstTask = firstTask.weekNumber!;
+
+      addAllTasksToListOfTasks();
+    }
+  }
+
+  void addAllTasksToListOfTasks() {
+    for (var task in finishedTasks) {
+      listOfTasks.add(task.taskTitle!);
     }
   }
 
@@ -160,10 +169,11 @@ class _WeekViewerState extends State<WeekViewer> {
               flex: 1,
             ),
             Expanded(
-              flex: 4,
+              flex: 6,
               child: Container(
                 color: Color(0xFFB388EB),
-                child: Column(
+                child:
+                    /*Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Expanded(
@@ -197,11 +207,24 @@ class _WeekViewerState extends State<WeekViewer> {
                           2.0),
                     )
                   ],
-                ),
+                )*/
+                    ListView.builder(
+                        itemCount: listOfTasks.length,
+                        itemBuilder: (context, index) {
+                          String taskName = listOfTasks[index];
+                          return taskHistoryCard(
+                              taskName,
+                              QUANTITY_TEXT +
+                                  numberOfTasksDone(taskName).toString(),
+                              VALUE_TEXT +
+                                  valueOfTasksDone(taskName).toString() +
+                                  SEK_TEXT,
+                              6.0);
+                        }),
               ),
             ),
             Expanded(
-              flex: 3,
+              flex: 4,
               child: Container(
                 decoration: BoxDecoration(
                   color: Color(0xFF8093F1),

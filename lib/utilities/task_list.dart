@@ -14,12 +14,14 @@ class TaskList {
   NewTask dishes = NewTask("Disk", 10, Icon(Icons.add));
   NewTask cleanUpRoom = NewTask("Städa rummet", 50, Icon(Icons.add));
   NewTask takeOutTrash = NewTask("Ta ut sopor", 5, Icon(Icons.add));
+  NewTask customTask = NewTask("Anpassad", 0, Icon(Icons.add));
   List<NewTask> _taskList = [];
 
   TaskList() {
     _taskList.add(dishes);
     _taskList.add(cleanUpRoom);
     _taskList.add(takeOutTrash);
+    _taskList.add(customTask);
   }
 
   List<NewTask> get taskList => _taskList;
@@ -39,20 +41,21 @@ class TaskList {
       List<FinishedTask> tasks,
       BuildContext context) {
     NewTask task = newTasks[index];
-    FinishedTask newTask = FinishedTask(
+    FinishedTask finishedTask = FinishedTask(
         taskTitle: task.taskTitle,
         valueOfTask: task.taskValue,
         taskSubmitted: setTaskSubmitted(DateTime.now()),
         weekNumber: DateTime.now().weekOfYear,
         yearNumber: DateTime.now().year);
 
-    if (!_checkForDuplicate(tasks, newTask.taskTitle!)) {
-      handler.insertSingleTask(newTask);
-      tasks.insert(0, newTask);
+    if (!_checkForDuplicate(tasks, finishedTask.taskTitle!)) {
+      handler.insertSingleTask(finishedTask);
+      tasks.insert(0, finishedTask);
       ListTile tile = ListTile(
-        title: Text(newTask.taskTitle!),
-        subtitle: Text(VALUE_TEXT + newTask.valueOfTask.toString() + SEK_TEXT),
-        trailing: Text(newTask.taskSubmitted.toString()),
+        title: Text(finishedTask.taskTitle!),
+        subtitle:
+            Text(VALUE_TEXT + finishedTask.valueOfTask.toString() + SEK_TEXT),
+        trailing: Text(finishedTask.taskSubmitted.toString()),
       );
       finishedTasks.insert(0, tile);
     } else {
