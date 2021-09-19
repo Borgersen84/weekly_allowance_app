@@ -27,10 +27,6 @@ class _WeekViewerState extends State<WeekViewer> {
   @override
   void initState() {
     super.initState();
-    /*listOfTasks.add(TASK_ONE);
-    listOfTasks.add(TASK_TWO);
-    listOfTasks.add(TASK_THREE);
-    listOfTasks.add("Anpassad");*/
     currentYear = _dateTime.year;
     currentWeek = _dateTime.weekOfYear;
 
@@ -45,7 +41,9 @@ class _WeekViewerState extends State<WeekViewer> {
 
   void addAllTasksToListOfTasks() {
     for (var task in finishedTasks) {
-      listOfTasks.add(task.taskTitle!);
+      if (!listOfTasks.contains(task.taskTitle)) {
+        listOfTasks.add(task.taskTitle!);
+      }
     }
   }
 
