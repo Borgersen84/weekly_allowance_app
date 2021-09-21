@@ -61,6 +61,7 @@ class TaskList {
           valueOfTask: task.taskValue,
           taskSubmitted: setTaskSubmitted(DateTime.now()),
           weekNumber: DateTime.now().weekOfYear,
+          //weekNumber: 37,
           yearNumber: DateTime.now().year);
     } else {
       String nameOfTask = "";
@@ -74,6 +75,7 @@ class TaskList {
           valueOfTask: valueOfTask,
           taskSubmitted: setTaskSubmitted(DateTime.now()),
           weekNumber: DateTime.now().weekOfYear,
+          //weekNumber: 37,
           yearNumber: DateTime.now().year);
     }
 

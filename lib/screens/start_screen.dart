@@ -25,7 +25,7 @@ class _StartScreenState extends State<StartScreen> {
   TaskList taskList = TaskList();
 
   static int weekOfTheYear = DateTime.now().weekOfYear;
-  //static int weekOfTheYear = 1;
+  //static int weekOfTheYear = 37;
   static String weekOfYearStr = weekOfTheYear.toString();
 
   WeeklyMoney moneyWeekly = WeeklyMoney(WEEK_TEXT + weekOfYearStr);
@@ -179,7 +179,10 @@ class _StartScreenState extends State<StartScreen> {
       body: finishedTaskTiles.length > 0
           ? _mainBody()
           : Center(
-              child: Text(EMPTY_LIST_MESSAGE),
+              child: Text(
+                EMPTY_LIST_MESSAGE,
+                style: alertMessageTextStyle,
+              ),
             ),
     );
   }

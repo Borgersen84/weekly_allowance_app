@@ -20,7 +20,8 @@ class _WeekViewerState extends State<WeekViewer> {
 
   int currentWeek = 0;
   int currentYear = 0;
-  List<String> listOfTasks = [];
+  //List<String> listOfTasks = [];
+  List<FinishedTask> thisWeeksTasks = [];
   int yearOfFirstTask = 0;
   int weekOfFirstTask = 0;
 
@@ -35,17 +36,29 @@ class _WeekViewerState extends State<WeekViewer> {
       yearOfFirstTask = firstTask.yearNumber!;
       weekOfFirstTask = firstTask.weekNumber!;
 
-      addAllTasksToListOfTasks();
+      //addAllTasksToListOfTasks();
+      thisWeeksTasks = addThisWeeksTasksToSeparateList(finishedTasks);
     }
   }
 
-  void addAllTasksToListOfTasks() {
+  List<FinishedTask> addThisWeeksTasksToSeparateList(List<FinishedTask> list) {
+    List<FinishedTask> newList = [];
+    for (var t in list) {
+      if (t.weekNumber == currentWeek) {
+        newList.add(t);
+      }
+    }
+
+    return newList;
+  }
+
+/*  void addAllTasksToListOfTasks() {
     for (var task in finishedTasks) {
       if (!listOfTasks.contains(task.taskTitle)) {
         listOfTasks.add(task.taskTitle!);
       }
     }
-  }
+  }*/
 
   bool isBeforeFirstTask(int week, int year) {
     if (week <= weekOfFirstTask && year <= yearOfFirstTask) {
@@ -82,16 +95,16 @@ class _WeekViewerState extends State<WeekViewer> {
 
   int getTotalValueOfAllTasksDone() {
     int num = 0;
-    for (var s in listOfTasks) {
-      num += valueOfTasksDone(s);
+    for (var s in finishedTasks) {
+      num += valueOfTasksDone(s.taskTitle.toString());
     }
     return num;
   }
 
   int getTotalNumberOfTasksDone() {
     int num = 0;
-    for (var s in listOfTasks) {
-      num += numberOfTasksDone(s);
+    for (var s in finishedTasks) {
+      num += numberOfTasksDone(s.taskTitle.toString());
     }
 
     return num;
@@ -107,6 +120,9 @@ class _WeekViewerState extends State<WeekViewer> {
         } else
           currentWeek--;
       }
+      setState(() {
+        thisWeeksTasks = addThisWeeksTasksToSeparateList(finishedTasks);
+      });
     });
   }
 
@@ -119,6 +135,9 @@ class _WeekViewerState extends State<WeekViewer> {
         currentWeek++;
       });
     }
+    setState(() {
+      thisWeeksTasks = addThisWeeksTasksToSeparateList(finishedTasks);
+    });
   }
 
   @override
@@ -168,10 +187,11 @@ class _WeekViewerState extends State<WeekViewer> {
             ),
             Expanded(
               flex: 6,
-              child: Container(
-                color: Color(0xFFB388EB),
-                child:
-                    /*Column(
+              child: thisWeeksTasks.length > 0
+                  ? Container(
+                      color: Color(0xFFB388EB),
+                      child:
+                          /*Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Expanded(
@@ -206,20 +226,32 @@ class _WeekViewerState extends State<WeekViewer> {
                     )
                   ],
                 )*/
-                    ListView.builder(
-                        itemCount: listOfTasks.length,
-                        itemBuilder: (context, index) {
-                          String taskName = listOfTasks[index];
-                          return taskHistoryCard(
-                              taskName,
-                              QUANTITY_TEXT +
-                                  numberOfTasksDone(taskName).toString(),
-                              VALUE_TEXT +
-                                  valueOfTasksDone(taskName).toString() +
-                                  SEK_TEXT,
-                              6.0);
-                        }),
-              ),
+                          ListView.builder(
+                              itemCount: thisWeeksTasks.length,
+                              itemBuilder: (context, index) {
+                                String taskName =
+                                    thisWeeksTasks[index].taskTitle.toString();
+                                int amountOfCompletions =
+                                    numberOfTasksDone(taskName);
+                                int valueOfTaskCompletions =
+                                    valueOfTasksDone(taskName);
+                                if (amountOfCompletions > 0) {
+                                  return taskHistoryCard(
+                                      taskName,
+                                      QUANTITY_TEXT +
+                                          amountOfCompletions.toString(),
+                                      VALUE_TEXT +
+                                          valueOfTaskCompletions.toString() +
+                                          SEK_TEXT,
+                                      6.0);
+                                }
+                                return Container();
+                              }),
+                    )
+                  : Center(
+                      child: Text("Du har inte arbetat denna veckan!",
+                          style: alertMessageTextStyle),
+                    ),
             ),
             Expanded(
               flex: 4,

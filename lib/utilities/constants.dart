@@ -6,6 +6,15 @@ const kMenuIcon = Icon(
   size: 35.0,
 );
 
+const alertMessageTextStyle = TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.w600,
+    color: Colors.red,
+    shadows: [
+      Shadow(offset: Offset(10, 10), blurRadius: 3.0, color: Color(0xFFF7AEF8)),
+      Shadow(offset: Offset(10, 10), blurRadius: 8.0, color: Color(0xFF8093F1)),
+    ]);
+
 const String MAIN_SCREEN_TITLE = "Esther's Veckopeng";
 const String EMPTY_LIST_MESSAGE = "Listan är tom. Du måste jobba";
 const String WEEK_TEXT = "Vecka ";
