@@ -15,7 +15,7 @@ const alertMessageTextStyle = TextStyle(
       Shadow(offset: Offset(10, 10), blurRadius: 8.0, color: Color(0xFF8093F1)),
     ]);
 
-const String MAIN_SCREEN_TITLE = "Esther's Veckopeng";
+const String MAIN_SCREEN_TITLE = "Esthers Veckopeng";
 const String EMPTY_LIST_MESSAGE = "Listan är tom. Du måste jobba";
 const String WEEK_TEXT = "Vecka ";
 const String VALUE_TEXT = "Värde: ";
