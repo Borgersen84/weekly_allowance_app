@@ -20,7 +20,7 @@ class _WeekViewerState extends State<WeekViewer> {
 
   int currentWeek = 0;
   int currentYear = 0;
-  //List<String> listOfTasks = [];
+  List<String> listOfTasks = [];
   List<FinishedTask> thisWeeksTasks = [];
   int yearOfFirstTask = 0;
   int weekOfFirstTask = 0;
@@ -36,8 +36,8 @@ class _WeekViewerState extends State<WeekViewer> {
       yearOfFirstTask = firstTask.yearNumber!;
       weekOfFirstTask = firstTask.weekNumber!;
 
-      //addAllTasksToListOfTasks();
       thisWeeksTasks = addThisWeeksTasksToSeparateList(finishedTasks);
+      listOfTasks = addWeeklyTasksToStringList(thisWeeksTasks);
     }
   }
 
@@ -52,13 +52,16 @@ class _WeekViewerState extends State<WeekViewer> {
     return newList;
   }
 
-/*  void addAllTasksToListOfTasks() {
-    for (var task in finishedTasks) {
-      if (!listOfTasks.contains(task.taskTitle)) {
-        listOfTasks.add(task.taskTitle!);
+  List<String> addWeeklyTasksToStringList(List<FinishedTask> list) {
+    List<String> newList = [];
+    for (var task in list) {
+      if (!newList.contains(task.taskTitle)) {
+        newList.add(task.taskTitle!);
       }
     }
-  }*/
+
+    return newList;
+  }
 
   bool isBeforeFirstTask(int week, int year) {
     if (week <= weekOfFirstTask && year <= yearOfFirstTask) {
@@ -69,7 +72,7 @@ class _WeekViewerState extends State<WeekViewer> {
 
   int numberOfTasksDone(String taskName) {
     int num = 0;
-    for (var task in finishedTasks) {
+    for (var task in thisWeeksTasks) {
       if (task.weekNumber == currentWeek &&
           task.taskTitle == taskName &&
           task.yearNumber == currentYear) {
@@ -82,7 +85,7 @@ class _WeekViewerState extends State<WeekViewer> {
 
   int valueOfTasksDone(String taskName) {
     int num = 0;
-    for (var task in finishedTasks) {
+    for (var task in thisWeeksTasks) {
       if (task.weekNumber == currentWeek &&
           task.taskTitle == taskName &&
           task.yearNumber == currentYear) {
@@ -95,16 +98,16 @@ class _WeekViewerState extends State<WeekViewer> {
 
   int getTotalValueOfAllTasksDone() {
     int num = 0;
-    for (var s in finishedTasks) {
-      num += valueOfTasksDone(s.taskTitle.toString());
+    for (var s in listOfTasks) {
+      num += valueOfTasksDone(s);
     }
     return num;
   }
 
   int getTotalNumberOfTasksDone() {
     int num = 0;
-    for (var s in finishedTasks) {
-      num += numberOfTasksDone(s.taskTitle.toString());
+    for (var s in listOfTasks) {
+      num += numberOfTasksDone(s);
     }
 
     return num;
@@ -122,6 +125,7 @@ class _WeekViewerState extends State<WeekViewer> {
       }
       setState(() {
         thisWeeksTasks = addThisWeeksTasksToSeparateList(finishedTasks);
+        listOfTasks = addWeeklyTasksToStringList(thisWeeksTasks);
       });
     });
   }
@@ -137,6 +141,7 @@ class _WeekViewerState extends State<WeekViewer> {
     }
     setState(() {
       thisWeeksTasks = addThisWeeksTasksToSeparateList(finishedTasks);
+      listOfTasks = addWeeklyTasksToStringList(thisWeeksTasks);
     });
   }
 
@@ -227,25 +232,21 @@ class _WeekViewerState extends State<WeekViewer> {
                   ],
                 )*/
                           ListView.builder(
-                              itemCount: thisWeeksTasks.length,
+                              itemCount: listOfTasks.length,
                               itemBuilder: (context, index) {
-                                String taskName =
-                                    thisWeeksTasks[index].taskTitle.toString();
+                                String taskName = listOfTasks[index];
                                 int amountOfCompletions =
                                     numberOfTasksDone(taskName);
                                 int valueOfTaskCompletions =
                                     valueOfTasksDone(taskName);
-                                if (amountOfCompletions > 0) {
-                                  return taskHistoryCard(
-                                      taskName,
-                                      QUANTITY_TEXT +
-                                          amountOfCompletions.toString(),
-                                      VALUE_TEXT +
-                                          valueOfTaskCompletions.toString() +
-                                          SEK_TEXT,
-                                      6.0);
-                                }
-                                return Container();
+                                return taskHistoryCard(
+                                    taskName,
+                                    QUANTITY_TEXT +
+                                        amountOfCompletions.toString(),
+                                    VALUE_TEXT +
+                                        valueOfTaskCompletions.toString() +
+                                        SEK_TEXT,
+                                    6.0);
                               }),
                     )
                   : Center(
